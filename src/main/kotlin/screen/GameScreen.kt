@@ -4,10 +4,13 @@ import assets.MusicAssets
 import assets.TextureAtlasAssets
 import assets.get
 import com.badlogic.ashley.core.PooledEngine
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.BitmapFont
+import com.badlogic.gdx.math.Vector3
 import ecs.component.MoveComponent
 import ecs.component.PlayerComponent
 import ecs.component.RenderComponent
@@ -33,6 +36,9 @@ class GameScreen(
         with<RenderComponent>()
     }
 
+    // create the touchPos to store mouse click position
+    private val touchPos = Vector3()
+
     override fun render(delta: Float) {
         handleInput()
         logic()
@@ -41,19 +47,26 @@ class GameScreen(
     }
 
     private fun handleInput() {
-        /*
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            player = Player(player.x - 5f, player.y)
-        } else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            player = Player(player.x + 5f, player.y)
-        } else if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            player = Player(player.x, player.y + 5f)
-        }else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            player = Player(player.x, player.y - 5f)
+        // process user input
+        if (Gdx.input.isTouched) {
+            touchPos.set(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f)
+            camera.unproject(touchPos)
+            player[TransformComponent.mapper]?.let { transform -> transform.bounds.x = touchPos.x - 64f / 2f }
         }
-         */
+        when {
+            Gdx.input.isKeyPressed(Input.Keys.A) -> player[MoveComponent.mapper]?.let { move ->
+                {
+                    move.speed.x = -200f
+                }
+            }
+            Gdx.input.isKeyPressed(Input.Keys.D) -> player[MoveComponent.mapper]?.let { move ->
+                move.speed.x = 200f
+            }
+            else -> player[MoveComponent.mapper]?.let { move -> move.speed.x = 0f }
+        }
     }
-    private fun logic() { }
+
+    private fun logic() {}
 
 
     override fun show() {

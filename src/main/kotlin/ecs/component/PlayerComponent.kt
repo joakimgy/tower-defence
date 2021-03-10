@@ -8,7 +8,5 @@ class PlayerComponent : Component {
         val mapper = mapperFor<PlayerComponent>()
     }
 
-    val position = Position(60f, 20f)
+    val coins = 56
 }
-
-data class Position(val x: Float, val y: Float)

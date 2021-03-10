@@ -20,7 +20,8 @@ class RenderSystem(
 ) : SortedIteratingSystem(
     allOf(TransformComponent::class, RenderComponent::class).get(),
     // compareBy is used to render entities by their z-index (=player is drawn in the background; raindrops are drawn in the foreground)
-    compareBy { entity: Entity -> entity[RenderComponent.mapper]?.z }) {
+    compareBy { entity: Entity -> entity[RenderComponent.mapper]?.z }
+) {
     private val playerCmp = player[PlayerComponent.mapper]!!
 
     override fun update(deltaTime: Float) {
@@ -33,8 +34,8 @@ class RenderSystem(
 
         batch.use {
             // TODO: update doesn't work
-            //super.update(deltaTime)
-            font.draw(batch, "Hello people!", 0f, 480f)
+            // super.update(deltaTime)
+            font.draw(batch, "Coins: ${playerCmp.coins}", 0f, 480f)
         }
     }
 

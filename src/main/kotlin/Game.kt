@@ -37,4 +37,3 @@ class Game : KtxGame<KtxScreen>() {
         super.dispose()
     }
 }
-

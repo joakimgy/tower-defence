@@ -22,7 +22,7 @@ class LoadingScreen(
 
     override fun show() {
         MusicAssets.values().forEach { assets.load(it) }
-        //SoundAssets.values().forEach { assets.load(it) }
+        // SoundAssets.values().forEach { assets.load(it) }
         TextureAtlasAssets.values().forEach { assets.load(it) }
     }
 

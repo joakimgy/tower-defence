@@ -14,7 +14,6 @@ enum class MusicAssets(val path: String) {
 inline fun AssetManager.load(asset: MusicAssets) = load<Music>(asset.path)
 inline operator fun AssetManager.get(asset: MusicAssets) = getAsset<Music>(asset.path)
 
-
 // texture atlas
 enum class TextureAtlasAssets(val path: String) {
     Game("src/main/kotlin/assets/images/game.atlas")
