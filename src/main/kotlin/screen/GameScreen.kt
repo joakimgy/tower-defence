@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.math.Vector3
 import ecs.component.*
+import ecs.system.MapSystem
 import ecs.system.MoveSystem
 import ecs.system.RenderSystem
 import ktx.app.KtxScreen
@@ -34,18 +35,35 @@ class GameScreen(
     }
 
     private val map = engine.entity {
-        with<MapComponent>()
-        with<TransformComponent> { bounds.set(800f / 2f - 64f / 2f, 120f, 126f, 126f) }
-        with<MoveComponent>()
+        with<MapComponent> {
+            blocks[Position(10, 10)] = true
+            blocks[Position(20, 20)] = true
+            blocks[Position(30, 30)] = true
+        }
         with<RenderComponent>()
     }
 
     // create the touchPos to store mouse click position
     private val touchPos = Vector3()
 
+    override fun show() {
+        // start the playback of the background music when the screen is shown
+        assets[MusicAssets.Rain].apply { isLooping = true; volume = 0.01f }.play()
+        // set player sprite
+        player[RenderComponent.mapper]?.sprite?.setRegion(assets[TextureAtlasAssets.Game].findRegion("player"))
+        // set map
+        map[RenderComponent.mapper]?.sprite?.setRegion(assets[TextureAtlasAssets.Map].findRegion("tile"))
+
+        // initialize entity engine
+        engine.apply {
+            addSystem(MoveSystem())
+            addSystem(RenderSystem(player, batch, font, camera))
+            addSystem(MapSystem(map, batch, font, camera))
+        }
+    }
+
     override fun render(delta: Float) {
         handleInput()
-        logic()
         // everything is now done withing our entity engine --> update it every frame
         engine.update(delta)
     }
@@ -80,24 +98,5 @@ class GameScreen(
         }
     }
 
-    private fun logic() {}
 
-
-    override fun show() {
-        // start the playback of the background music when the screen is shown
-        assets[MusicAssets.Rain].apply { isLooping = true; volume = 0.01f }.play()
-        // set player sprite
-        player[RenderComponent.mapper]?.sprite?.setRegion(assets[TextureAtlasAssets.Game].findRegion("player"))
-        // set map
-        map[RenderComponent.mapper]?.sprite?.apply {
-            setRegion(assets[TextureAtlasAssets.Map].findRegion("tile"))
-            setScale(10f)
-        }
-
-        // initialize entity engine
-        engine.apply {
-            addSystem(MoveSystem())
-            addSystem(RenderSystem(player, batch, font, camera))
-        }
-    }
 }
