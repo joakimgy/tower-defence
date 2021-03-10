@@ -21,6 +21,7 @@ dependencies {
     implementation ("io.github.libktx:ktx-graphics:1.9.10-b2")
     implementation("io.github.libktx:ktx-inject:1.9.12-b1")
     implementation("io.github.libktx:ktx-ashley:1.9.12-b1")
+    implementation("io.github.libktx:ktx-assets:1.9.12-b1")
     implementation("com.badlogicgames.ashley:ashley:1.7.3")
 }
 

@@ -1,6 +1,9 @@
 package screen
 
 import Game
+import assets.MusicAssets
+import assets.TextureAtlasAssets
+import assets.load
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.OrthographicCamera
@@ -18,9 +21,9 @@ class LoadingScreen(
 ) : KtxScreen {
 
     override fun show() {
-        //MusicAssets.values().forEach { assets.load(it) }
+        MusicAssets.values().forEach { assets.load(it) }
         //SoundAssets.values().forEach { assets.load(it) }
-        //TextureAtlasAssets.values().forEach { assets.load(it) }
+        TextureAtlasAssets.values().forEach { assets.load(it) }
     }
 
     override fun render(delta: Float) {
@@ -40,7 +43,8 @@ class LoadingScreen(
         }
 
         if (Gdx.input.isTouched && assets.isFinished) {
-            game.dispose()
+            game.removeScreen<LoadingScreen>()
+            dispose()
             game.setScreen<GameScreen>()
         }
     }
