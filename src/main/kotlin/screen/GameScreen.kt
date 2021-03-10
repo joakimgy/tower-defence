@@ -51,18 +51,28 @@ class GameScreen(
         if (Gdx.input.isTouched) {
             touchPos.set(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f)
             camera.unproject(touchPos)
-            player[TransformComponent.mapper]?.let { transform -> transform.bounds.x = touchPos.x - 64f / 2f }
+            player[TransformComponent.mapper]?.let { transform ->
+                transform.bounds.x = touchPos.x - 64f / 2f
+                transform.bounds.y = touchPos.y - 64f / 2f
+            }
         }
         when {
             Gdx.input.isKeyPressed(Input.Keys.A) -> player[MoveComponent.mapper]?.let { move ->
-                {
-                    move.speed.x = -200f
-                }
+                move.speed.x = -200f
             }
             Gdx.input.isKeyPressed(Input.Keys.D) -> player[MoveComponent.mapper]?.let { move ->
                 move.speed.x = 200f
             }
-            else -> player[MoveComponent.mapper]?.let { move -> move.speed.x = 0f }
+            Gdx.input.isKeyPressed(Input.Keys.W) -> player[MoveComponent.mapper]?.let { move ->
+                move.speed.y = 200f
+            }
+            Gdx.input.isKeyPressed(Input.Keys.S) -> player[MoveComponent.mapper]?.let { move ->
+                move.speed.y = -200f
+            }
+            else -> player[MoveComponent.mapper]?.let { move ->
+                move.speed.x = 0f
+                move.speed.y = 0f
+            }
         }
     }
 

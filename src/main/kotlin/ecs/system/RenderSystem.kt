@@ -34,7 +34,7 @@ class RenderSystem(
 
         batch.use {
             // TODO: update doesn't work
-            // super.update(deltaTime)
+            super.update(deltaTime)
             font.draw(batch, "Coins: ${playerCmp.coins}", 0f, 480f)
         }
     }
