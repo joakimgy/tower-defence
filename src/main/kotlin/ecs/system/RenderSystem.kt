@@ -33,7 +33,6 @@ class RenderSystem(
         // draw all entities in one batch
 
         batch.use {
-            // TODO: update doesn't work
             super.update(deltaTime)
             font.draw(batch, "Coins: ${playerCmp.coins}", 0f, 480f)
         }

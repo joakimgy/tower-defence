@@ -11,10 +11,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.math.Vector3
-import ecs.component.MoveComponent
-import ecs.component.PlayerComponent
-import ecs.component.RenderComponent
-import ecs.component.TransformComponent
+import ecs.component.*
 import ecs.system.MoveSystem
 import ecs.system.RenderSystem
 import ktx.app.KtxScreen
@@ -32,6 +29,13 @@ class GameScreen(
     private val player = engine.entity {
         with<PlayerComponent>()
         with<TransformComponent> { bounds.set(800f / 2f - 64f / 2f, 20f, 64f, 64f) }
+        with<MoveComponent>()
+        with<RenderComponent> { z = 1 }
+    }
+
+    private val map = engine.entity {
+        with<MapComponent>()
+        with<TransformComponent> { bounds.set(800f / 2f - 64f / 2f, 120f, 126f, 126f) }
         with<MoveComponent>()
         with<RenderComponent>()
     }
@@ -84,15 +88,16 @@ class GameScreen(
         assets[MusicAssets.Rain].apply { isLooping = true; volume = 0.01f }.play()
         // set player sprite
         player[RenderComponent.mapper]?.sprite?.setRegion(assets[TextureAtlasAssets.Game].findRegion("player"))
+        // set map
+        map[RenderComponent.mapper]?.sprite?.apply {
+            setRegion(assets[TextureAtlasAssets.Map].findRegion("tile"))
+            setScale(10f)
+        }
+
         // initialize entity engine
         engine.apply {
-            // add systems
-            //addSystem(SpawnSystem(assets))
             addSystem(MoveSystem())
             addSystem(RenderSystem(player, batch, font, camera))
-            // add CollisionSystem last as it removes entities and this should always
-            // happen at the end of an engine update frame
-            //addSystem(CollisionSystem(bucket, assets))
         }
     }
 }

@@ -27,6 +27,7 @@ class Game : KtxGame<KtxScreen>() {
 
             addScreen(LoadingScreen(this@Game, inject(), inject(), inject(), inject()))
             addScreen(GameScreen(inject(), inject(), inject(), inject(), inject()))
+
         }
         setScreen<LoadingScreen>()
         super.create()
