@@ -34,17 +34,36 @@ class GameScreen(
         with<RenderComponent> { z = 1 }
     }
 
+    private val dirtBlocks = (1..10).map { x ->
+        (1..6).map { y ->
+            engine.entity {
+                with<TransformComponent> { bounds.set(x * 64f, y * 62f, 64f, 64f) }
+                with<RenderComponent>()
+            }
+        }
+    }
+
+
     override fun show() {
         // start the playback of the background music when the screen is shown
         assets[MusicAssets.Hype].apply { isLooping = true; volume = 0.00f }.play()
         // set sprites
         player[RenderComponent.mapper]?.sprite?.setRegion(assets[TextureAtlasAssets.BlackSmith].findRegion("dude"))
+        dirtBlocks.flatten().forEach { block ->
+            block[RenderComponent.mapper]?.sprite?.setRegion(
+                assets[TextureAtlasAssets.TowerDefence].findRegion(
+                    "dirt"
+                )
+            )
+        }
+
 
         // initialize entity engine
         engine.apply {
             addSystem(MoveSystem())
             addSystem(RenderSystem(player, batch, font, camera))
         }
+
     }
 
     override fun render(delta: Float) {
@@ -94,14 +113,13 @@ class GameScreen(
                 with<TransformComponent> {
                     val posx = player[TransformComponent.mapper]?.bounds?.x ?: 10f
                     val posy = player[TransformComponent.mapper]?.bounds?.y ?: 10f
-                    bounds.set(posx, posy, 24f, 32f)
+                    bounds.set(posx - 16f, posy - 16f, 24f, 32f)
                 }
                 with<MoveComponent>()
                 with<RenderComponent> {
-                    z = 1
+                    sprite.setRegion(assets[TextureAtlasAssets.TowerDefence].findRegion("buildingBlock"))
                 }
             }
-            block[RenderComponent.mapper]?.sprite?.setRegion(assets[TextureAtlasAssets.TowerDefence].findRegion("buildingBlock"))
         }
     }
 

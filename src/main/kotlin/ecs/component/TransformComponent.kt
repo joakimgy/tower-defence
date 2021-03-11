@@ -10,7 +10,5 @@ class TransformComponent() : Component {
     }
 
     val bounds = Rectangle()
-    var size: Size? = null
 }
 
-data class Size(val width: Float, val height: Float)

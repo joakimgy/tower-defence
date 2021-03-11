@@ -41,12 +41,7 @@ class RenderSystem(
     override fun processEntity(entity: Entity, deltaTime: Float) {
         entity[TransformComponent.mapper]?.let { transform ->
             entity[RenderComponent.mapper]?.let { render ->
-                if (transform.size != null) {
-                    batch.draw(render.sprite, transform.bounds.x, transform.bounds.y, transform.size!!.width, transform.size!!.height)
-                } else {
-                    batch.draw(render.sprite, transform.bounds.x, transform.bounds.y)
-
-                }
+                batch.draw(render.sprite, transform.bounds.x, transform.bounds.y)
             }
         }
     }
