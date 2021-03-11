@@ -9,5 +9,5 @@ class BlockComponent : Component {
         val mapper = mapperFor<BlockComponent>()
     }
 
-}
 
+}

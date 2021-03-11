@@ -1,18 +1,18 @@
-game.png
-size: 256,128
+td.png
+size: 64,64
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-player
+buildingBlock
   rotate: false
-  xy: 2, 2
+  xy: 1216, 448
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-drop
+dirt
   rotate: false
-  xy: 70, 2
+  xy: 1280, 386
   size: 64, 64
   orig: 64, 64
   offset: 0, 0

@@ -33,23 +33,12 @@ class GameScreen(
         with<MoveComponent>()
         with<RenderComponent> { z = 1 }
     }
-    private val map = engine.entity {
-        with<MapComponent> {
-            (1..20).map { x -> (1..20).map { y -> blocks[Position(x, y)] = BlockComponent() } }
-        }
-        with<TransformComponent> {
-            bounds.set(200f, 50f, 800f - 2*200f , 480f - 2*100f )
-            size = Size(800f / 2f, 800f / 2f)
-        }
-        with<RenderComponent>()
-    }
 
     override fun show() {
         // start the playback of the background music when the screen is shown
         assets[MusicAssets.Hype].apply { isLooping = true; volume = 0.00f }.play()
         // set sprites
         player[RenderComponent.mapper]?.sprite?.setRegion(assets[TextureAtlasAssets.BlackSmith].findRegion("dude"))
-        map[RenderComponent.mapper]?.sprite?.setRegion(assets[TextureAtlasAssets.Map].findRegion("tile"))
 
         // initialize entity engine
         engine.apply {
@@ -98,6 +87,21 @@ class GameScreen(
             else -> player[MoveComponent.mapper]?.let { move ->
                 move.speed.y = 0f
             }
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            val block = engine.entity {
+                with<BlockComponent>()
+                with<TransformComponent> {
+                    val posx = player[TransformComponent.mapper]?.bounds?.x ?: 10f
+                    val posy = player[TransformComponent.mapper]?.bounds?.y ?: 10f
+                    bounds.set(posx, posy, 24f, 32f)
+                }
+                with<MoveComponent>()
+                with<RenderComponent> {
+                    z = 1
+                }
+            }
+            block[RenderComponent.mapper]?.sprite?.setRegion(assets[TextureAtlasAssets.TowerDefence].findRegion("buildingBlock"))
         }
     }
 

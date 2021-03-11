@@ -16,7 +16,7 @@ inline operator fun AssetManager.get(asset: MusicAssets) = getAsset<Music>(asset
 
 // texture atlas
 enum class TextureAtlasAssets(val path: String) {
-    Map("src/main/kotlin/assets/images/map.atlas"),
+    TowerDefence("src/main/kotlin/assets/images/td.atlas"),
     BlackSmith("src/main/kotlin/assets/images/blacksmith.atlas")
 }
 
