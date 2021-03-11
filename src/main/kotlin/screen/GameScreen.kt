@@ -12,7 +12,6 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.math.Vector3
 import ecs.component.*
-import ecs.system.MapSystem
 import ecs.system.MoveSystem
 import ecs.system.RenderSystem
 import ktx.app.KtxScreen
@@ -33,12 +32,13 @@ class GameScreen(
         with<MoveComponent>()
         with<RenderComponent> { z = 1 }
     }
-
     private val map = engine.entity {
         with<MapComponent> {
-            blocks[Position(10, 10)] = true
-            blocks[Position(20, 20)] = true
-            blocks[Position(30, 30)] = true
+            (1..20).map { x -> (1..20).map { y -> blocks[Position(x, y)] = BlockComponent() } }
+        }
+        with<TransformComponent> {
+            bounds.set(200f, 50f, 800f - 2*200f , 480f - 2*100f )
+            size = Size(800f / 2f, 800f / 2f)
         }
         with<RenderComponent>()
     }
@@ -58,7 +58,6 @@ class GameScreen(
         engine.apply {
             addSystem(MoveSystem())
             addSystem(RenderSystem(player, batch, font, camera))
-            addSystem(MapSystem(map, batch, font, camera))
         }
     }
 

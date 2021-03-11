@@ -5,7 +5,7 @@ import ktx.ashley.mapperFor
 
 class MapComponent : Component {
 
-    val blocks = HashMap<Position, Boolean>()
+    val blocks = HashMap<Position, BlockComponent>()
 
     companion object {
         val mapper = mapperFor<MapComponent>()
@@ -14,4 +14,4 @@ class MapComponent : Component {
 
 }
 
-data class Position(val x: Int, val y: Int);
+data class Position(var x: Int, var y: Int);
