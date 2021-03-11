@@ -17,3 +17,17 @@ dirt
   orig: 64, 64
   offset: 0, 0
   index: -1
+turret
+  rotate: false
+  xy: 1280, 642
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+enemy
+  rotate: false
+  xy: 1024, 642
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1

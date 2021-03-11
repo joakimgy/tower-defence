@@ -31,7 +31,7 @@ class GameScreen(
         with<PlayerComponent>()
         with<TransformComponent> { bounds.set(800f / 2f, 480f / 2f, 24f, 32f) }
         with<MoveComponent>()
-        with<RenderComponent> { z = 1 }
+        with<RenderComponent> { z = 2 }
     }
 
     private val dirtBlocks = (1..10).map { x ->
@@ -41,6 +41,16 @@ class GameScreen(
                 with<RenderComponent>()
             }
         }
+    }
+
+    private val enemy = engine.entity {
+        with<EnemyComponent>()
+        with<RenderComponent> {z = 1}
+        with<MoveComponent> {
+            speed.x = 10f
+            speed.y = 10f
+        }
+        with<TransformComponent> { bounds.set( 64f,  62f, 64f, 64f) }
     }
 
 
@@ -56,6 +66,7 @@ class GameScreen(
                 )
             )
         }
+        enemy[RenderComponent.mapper]?.sprite?.setRegion(assets[TextureAtlasAssets.TowerDefence].findRegion("enemy"))
 
 
         // initialize entity engine
@@ -109,7 +120,6 @@ class GameScreen(
         }
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             engine.entity {
-                with<BlockComponent>()
                 with<TransformComponent> {
                     val posX = player[TransformComponent.mapper]!!.bounds.x
                     val posY = player[TransformComponent.mapper]!!.bounds.y
@@ -117,7 +127,7 @@ class GameScreen(
                 }
                 with<MoveComponent>()
                 with<RenderComponent> {
-                    sprite.setRegion(assets[TextureAtlasAssets.TowerDefence].findRegion("buildingBlock"))
+                    sprite.setRegion(assets[TextureAtlasAssets.TowerDefence].findRegion("turret"))
                 }
             }
         }
@@ -125,7 +135,6 @@ class GameScreen(
             touchPos.set(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f)
             camera.unproject(touchPos)
             engine.entity {
-                with<BlockComponent>()
                 with<TransformComponent> {
                     bounds.set(touchPos.x - touchPos.x.rem(64f), touchPos.y - touchPos.y.rem(64f), 24f, 32f)
                 }
