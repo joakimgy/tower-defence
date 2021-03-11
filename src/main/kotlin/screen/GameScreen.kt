@@ -48,10 +48,9 @@ class GameScreen(
 
     override fun show() {
         // start the playback of the background music when the screen is shown
-        assets[MusicAssets.Rain].apply { isLooping = true; volume = 0.01f }.play()
-        // set player sprite
+        assets[MusicAssets.Hype].apply { isLooping = true; volume = 0.01f }.play()
+        // set sprites
         player[RenderComponent.mapper]?.sprite?.setRegion(assets[TextureAtlasAssets.Game].findRegion("player"))
-        // set map
         map[RenderComponent.mapper]?.sprite?.setRegion(assets[TextureAtlasAssets.Map].findRegion("tile"))
 
         // initialize entity engine
@@ -84,6 +83,11 @@ class GameScreen(
             Gdx.input.isKeyPressed(Input.Keys.D) -> player[MoveComponent.mapper]?.let { move ->
                 move.speed.x = 200f
             }
+            else -> player[MoveComponent.mapper]?.let { move ->
+                move.speed.x = 0f
+            }
+        }
+        when {
             Gdx.input.isKeyPressed(Input.Keys.W) -> player[MoveComponent.mapper]?.let { move ->
                 move.speed.y = 200f
             }
@@ -91,7 +95,6 @@ class GameScreen(
                 move.speed.y = -200f
             }
             else -> player[MoveComponent.mapper]?.let { move ->
-                move.speed.x = 0f
                 move.speed.y = 0f
             }
         }

@@ -8,7 +8,7 @@ import ktx.assets.load
 
 // music
 enum class MusicAssets(val path: String) {
-    Rain("src/main/kotlin/assets/music/hype.mp3")
+    Hype("src/main/kotlin/assets/music/hype.mp3")
 }
 
 inline fun AssetManager.load(asset: MusicAssets) = load<Music>(asset.path)
