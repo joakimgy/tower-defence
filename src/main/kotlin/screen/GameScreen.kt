@@ -77,26 +77,12 @@ class GameScreen(
 
     private fun handleInput() {
         // process user input
-        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+        if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
             touchPos.set(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f)
             camera.unproject(touchPos)
             player[TransformComponent.mapper]?.let { transform ->
                 transform.bounds.x = touchPos.x - 24f / 2f
                 transform.bounds.y = touchPos.y - 32f / 2f
-            }
-        }
-        if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
-            touchPos.set(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f)
-            camera.unproject(touchPos)
-            engine.entity {
-                with<BlockComponent>()
-                with<TransformComponent> {
-                    bounds.set(touchPos.x - touchPos.x.rem(64f), touchPos.y - touchPos.y.rem(64f), 24f, 32f)
-                }
-                with<MoveComponent>()
-                with<RenderComponent> {
-                    sprite.setRegion(assets[TextureAtlasAssets.TowerDefence].findRegion("buildingBlock"))
-                }
             }
         }
         when {
@@ -128,6 +114,20 @@ class GameScreen(
                     val posX = player[TransformComponent.mapper]!!.bounds.x
                     val posY = player[TransformComponent.mapper]!!.bounds.y
                     bounds.set(posX - posX.rem(64f), posY - posY.rem(64f), 24f, 32f)
+                }
+                with<MoveComponent>()
+                with<RenderComponent> {
+                    sprite.setRegion(assets[TextureAtlasAssets.TowerDefence].findRegion("buildingBlock"))
+                }
+            }
+        }
+        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+            touchPos.set(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f)
+            camera.unproject(touchPos)
+            engine.entity {
+                with<BlockComponent>()
+                with<TransformComponent> {
+                    bounds.set(touchPos.x - touchPos.x.rem(64f), touchPos.y - touchPos.y.rem(64f), 24f, 32f)
                 }
                 with<MoveComponent>()
                 with<RenderComponent> {
