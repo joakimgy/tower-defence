@@ -1,0 +1,12 @@
+blacksmith.png
+size: 24,32
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+dude
+  rotate: false
+  xy: 24, 64
+  size: 24, 32
+  orig: 24, 32
+  offset: 0, 0
+  index: -1

@@ -26,9 +26,10 @@ class GameScreen(
     private val camera: OrthographicCamera,
     private val engine: PooledEngine
 ) : KtxScreen {
+
     private val player = engine.entity {
         with<PlayerComponent>()
-        with<TransformComponent> { bounds.set(800f / 2f - 64f / 2f, 20f, 64f, 64f) }
+        with<TransformComponent> { bounds.set(800f / 2f, 480f / 2f, 24f, 32f) }
         with<MoveComponent>()
         with<RenderComponent> { z = 1 }
     }
@@ -43,14 +44,11 @@ class GameScreen(
         with<RenderComponent>()
     }
 
-    // create the touchPos to store mouse click position
-    private val touchPos = Vector3()
-
     override fun show() {
         // start the playback of the background music when the screen is shown
-        assets[MusicAssets.Hype].apply { isLooping = true; volume = 0.01f }.play()
+        assets[MusicAssets.Hype].apply { isLooping = true; volume = 0.00f }.play()
         // set sprites
-        player[RenderComponent.mapper]?.sprite?.setRegion(assets[TextureAtlasAssets.Game].findRegion("player"))
+        player[RenderComponent.mapper]?.sprite?.setRegion(assets[TextureAtlasAssets.BlackSmith].findRegion("dude"))
         map[RenderComponent.mapper]?.sprite?.setRegion(assets[TextureAtlasAssets.Map].findRegion("tile"))
 
         // initialize entity engine
@@ -66,14 +64,17 @@ class GameScreen(
         engine.update(delta)
     }
 
+    // create the touchPos to store mouse click position
+    private val touchPos = Vector3()
+
     private fun handleInput() {
         // process user input
         if (Gdx.input.isTouched) {
             touchPos.set(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f)
             camera.unproject(touchPos)
             player[TransformComponent.mapper]?.let { transform ->
-                transform.bounds.x = touchPos.x - 64f / 2f
-                transform.bounds.y = touchPos.y - 64f / 2f
+                transform.bounds.x = touchPos.x - 24f / 2f
+                transform.bounds.y = touchPos.y - 32f / 2f
             }
         }
         when {
