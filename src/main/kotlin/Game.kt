@@ -1,4 +1,3 @@
-
 import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.OrthographicCamera
@@ -26,7 +25,7 @@ class Game : KtxGame<KtxScreen>() {
             bindSingleton(PooledEngine())
 
             addScreen(LoadingScreen(this@Game, inject(), inject(), inject(), inject()))
-            addScreen(GameScreen(inject(), inject(), inject(), inject(), inject()))
+            addScreen(GameScreen(inject(), inject(), inject(), inject()))
 
         }
         setScreen<LoadingScreen>()

@@ -5,16 +5,14 @@ import assets.get
 import com.badlogic.ashley.core.Engine
 import com.badlogic.ashley.systems.IntervalSystem
 import com.badlogic.gdx.assets.AssetManager
-import ecs.component.EnemyComponent
-import ecs.component.MoveComponent
-import ecs.component.RenderComponent
-import ecs.component.TransformComponent
+import ecs.component.*
 import ktx.ashley.entity
 import ktx.ashley.with
 
 class SpawnSystem(assets: AssetManager) : IntervalSystem(10f) {
     private val enemyRegion = assets[TextureAtlasAssets.TowerDefence].findRegion("enemy")
     private val dirtRegion = assets[TextureAtlasAssets.TowerDefence].findRegion("dirt")
+    private val playerRegion = assets[TextureAtlasAssets.BlackSmith].findRegion("dude")
 
     override fun addedToEngine(engine: Engine?) {
         super.addedToEngine(engine)
@@ -27,11 +25,22 @@ class SpawnSystem(assets: AssetManager) : IntervalSystem(10f) {
                 }
             }
         }
+        // Spawn player
+        engine?.entity {
+            with<PlayerComponent>()
+            with<TransformComponent> { bounds.set(800f / 2f, 480f / 2f, 24f, 32f) }
+            with<MoveComponent>()
+            with<RenderComponent> {
+                z = 2
+                sprite.setRegion(playerRegion)
+            }
+        }
         // spawn an initial enemy when the system is added to the engine
         updateInterval()
     }
 
     override fun updateInterval() {
+        // Spawn a new enemy every interval
         engine.entity {
             with<EnemyComponent>()
             with<RenderComponent> {
