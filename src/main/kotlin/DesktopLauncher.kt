@@ -9,5 +9,5 @@ fun main() {
 
     LwjglApplication(Game(), config)
 
-    println("Hello World!")
+    println("Good luck...")
 }

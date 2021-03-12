@@ -16,17 +16,33 @@ class SpawnSystem(assets: AssetManager) : IntervalSystem(10f) {
 
     override fun addedToEngine(engine: Engine?) {
         super.addedToEngine(engine)
-        // Spawn map
+        spawnMap()
+        spawnPlayer()
+        spawnEnemy()
+    }
+
+    override fun updateInterval() {
+        spawnEnemy()
+    }
+
+
+    /*
+     * Help functions for spawning various entities
+     */
+
+    private fun spawnMap() {
         (1..10).forEach() { x ->
             (1..6).forEach { y ->
-                engine?.entity {
+                engine.entity {
                     with<TransformComponent> { bounds.set(x * 64f, y * 62f, 64f, 64f) }
                     with<RenderComponent> { sprite.setRegion(dirtRegion) }
                 }
             }
         }
-        // Spawn player
-        engine?.entity {
+    }
+
+    private fun spawnPlayer() {
+        engine.entity {
             with<PlayerComponent>()
             with<TransformComponent> { bounds.set(800f / 2f, 480f / 2f, 24f, 32f) }
             with<MoveComponent>()
@@ -35,12 +51,9 @@ class SpawnSystem(assets: AssetManager) : IntervalSystem(10f) {
                 sprite.setRegion(playerRegion)
             }
         }
-        // spawn an initial enemy when the system is added to the engine
-        updateInterval()
     }
 
-    override fun updateInterval() {
-        // Spawn a new enemy every interval
+    private fun spawnEnemy() {
         engine.entity {
             with<EnemyComponent>()
             with<RenderComponent> {
