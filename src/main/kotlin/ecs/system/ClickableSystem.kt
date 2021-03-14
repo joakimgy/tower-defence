@@ -7,6 +7,7 @@ import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input.Buttons
 import com.badlogic.gdx.assets.AssetManager
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Vector3
@@ -24,7 +25,8 @@ class ClickableSystem(
 ) : IteratingSystem(
     allOf(ClickableComponent::class, TransformComponent::class).get(),
 ) {
-    private val circle = assets[TextureAtlasAssets.TowerDefence].findRegion("circle")
+    private val circleRegion = assets[TextureAtlasAssets.TowerDefence].findRegion("circle")
+
 
     override fun processEntity(entity: Entity, deltaTime: Float) {
         entity[TransformComponent.mapper]?.let { transform ->
@@ -32,12 +34,24 @@ class ClickableSystem(
                 val clickPosition = Vector3(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f)
                 camera.unproject(clickPosition)
                 if (transform.bounds.contains(clickPosition.x, clickPosition.y)) {
-                    println("Touched$entity")
                     batch.use {
-                        batch.draw(circle, transform.bounds.x, transform.bounds.y)
+                        drawTransparentCircle(transform)
                     }
                 }
             }
         }
+    }
+
+    fun drawTransparentCircle(transform: TransformComponent) {
+        batch.color = Color.DARK_GRAY
+        batch.setColor(0f, 0f, 0f, 0.07f);
+        batch.draw(
+            circleRegion,
+            transform.bounds.x - 68f,
+            transform.bounds.y - 68f,
+            200f,
+            200f
+        )
+        batch.color = Color.WHITE;
     }
 }
