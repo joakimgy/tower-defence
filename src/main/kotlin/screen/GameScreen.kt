@@ -6,10 +6,7 @@ import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.Batch
-import ecs.system.InputSystem
-import ecs.system.MoveSystem
-import ecs.system.RenderSystem
-import ecs.system.SpawnSystem
+import ecs.system.*
 import ktx.app.KtxScreen
 
 class GameScreen(
@@ -29,6 +26,7 @@ class GameScreen(
             addSystem(RenderSystem(batch, camera))
             addSystem(InputSystem(camera, assets))
             addSystem(SpawnSystem(assets))
+            addSystem(ClickableSystem(batch, camera, assets))
         }
 
     }

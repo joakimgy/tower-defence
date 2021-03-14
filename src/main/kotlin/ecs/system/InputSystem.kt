@@ -9,10 +9,7 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.math.Vector3
-import ecs.component.MoveComponent
-import ecs.component.PlayerComponent
-import ecs.component.RenderComponent
-import ecs.component.TransformComponent
+import ecs.component.*
 import ktx.ashley.allOf
 import ktx.ashley.entity
 import ktx.ashley.get
@@ -53,25 +50,13 @@ class InputSystem(
                         with<TransformComponent> {
                             val posX = transform.bounds.x
                             val posY = transform.bounds.y
-                            bounds.set(posX - posX.rem(64f), posY - posY.rem(64f), 24f, 32f)
-                        }
-                        with<MoveComponent>()
-                        with<RenderComponent> {
-                            sprite.setRegion(assets[TextureAtlasAssets.TowerDefence].findRegion("turret"))
-                        }
-                    }
-                }
-                if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-                    touchPos.set(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f)
-                    camera.unproject(touchPos)
-                    engine.entity {
-                        with<TransformComponent> {
-                            bounds.set(touchPos.x - touchPos.x.rem(64f), touchPos.y - touchPos.y.rem(64f), 24f, 32f)
+                            bounds.set(posX - posX.rem(64f), posY - posY.rem(64f), 64f, 64f)
                         }
                         with<MoveComponent>()
                         with<RenderComponent> {
                             sprite.setRegion(assets[TextureAtlasAssets.TowerDefence].findRegion("buildingBlock"))
                         }
+                        with<ClickableComponent>()
                     }
                 }
             }

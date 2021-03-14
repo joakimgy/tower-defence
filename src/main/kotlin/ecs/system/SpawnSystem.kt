@@ -25,7 +25,6 @@ class SpawnSystem(assets: AssetManager) : IntervalSystem(10f) {
         spawnEnemy()
     }
 
-
     /*
      * Help functions for spawning various entities
      */
@@ -35,7 +34,9 @@ class SpawnSystem(assets: AssetManager) : IntervalSystem(10f) {
             (1..6).forEach { y ->
                 engine.entity {
                     with<TransformComponent> { bounds.set(x * 64f, y * 62f, 64f, 64f) }
-                    with<RenderComponent> { sprite.setRegion(dirtRegion) }
+                    with<RenderComponent> {
+                        sprite.setRegion(dirtRegion)
+                    }
                 }
             }
         }

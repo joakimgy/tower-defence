@@ -31,3 +31,10 @@ enemy
   orig: 64, 64
   offset: 0, 0
   index: -1
+circle
+  rotate: false
+  xy: 1152, 320
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
