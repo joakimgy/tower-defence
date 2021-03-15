@@ -3,6 +3,7 @@ package ecs.system
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.Family
 import com.badlogic.ashley.systems.IteratingSystem
+import com.badlogic.gdx.math.Rectangle
 import ecs.component.*
 import ktx.ashley.allOf
 import ktx.ashley.get
@@ -19,6 +20,8 @@ class PathfindingSystem :
                     val destination = enemy.path.firstOrNull()
 
                     if (destination == null) {
+                        println("Destination null")
+
                         move.speed.let {
                             it.x = 0f
                             it.y = 0f
@@ -36,12 +39,20 @@ class PathfindingSystem :
                         return engine.removeEntity(entity)
                     }
 
-                    if (transform.bounds.contains(destination.toVector())) {
+                    val hitbox = Rectangle(
+                        transform.bounds.x - 5f,
+                        transform.bounds.y - 5f,
+                        10f,
+                        10f
+                    )
+                    if (hitbox.contains(destination.toVector())) {
+                        println("Waypoint reach")
                         enemy.path.removeFirst()
                     }
 
                     move.speed.let {
                         val newDestination = enemy.path.firstOrNull()
+                        println("New destination $newDestination")
                         if (newDestination == null) {
                             it.x = 0f
                             it.y = 0f

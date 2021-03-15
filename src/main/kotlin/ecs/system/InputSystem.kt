@@ -21,6 +21,7 @@ import ktx.ashley.entity
 import ktx.ashley.get
 import ktx.ashley.with
 import utils.getCenterXY
+import utils.toCoordinate
 
 class InputSystem(
     private val camera: OrthographicCamera,
@@ -58,6 +59,11 @@ class InputSystem(
                     touchPos.set(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f)
                     camera.unproject(touchPos)
                     buildTower(Vector2(touchPos.x, touchPos.y), existingTowerBounds, AttackTowerComponent())
+                }
+                if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+                    touchPos.set(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f)
+                    camera.unproject(touchPos)
+                    println("Touched ${touchPos.toCoordinate()}")
                 }
                 if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
                     buildTower(

@@ -1,8 +1,8 @@
 package ecs.component
 
+import Coordinates
 import com.badlogic.ashley.core.Component
 import ktx.ashley.mapperFor
-import utils.Coordinate
 
 class EnemyComponent : Component {
     companion object {
@@ -11,6 +11,6 @@ class EnemyComponent : Component {
 
     var speed = 300f
 
-    var path: MutableList<Coordinate> = mutableListOf()
+    var path: MutableList<Coordinates> = mutableListOf()
 
 }

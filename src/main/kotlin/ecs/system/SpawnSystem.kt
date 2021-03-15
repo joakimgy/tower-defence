@@ -1,20 +1,26 @@
 package ecs.system
 
+import AlgorithmAStarImpl
+import Coordinates
 import MAP_SIZE_X
 import MAP_SIZE_Y
+import Route
 import TILE_SIZE
 import assets.TextureAtlasAssets
 import assets.get
 import com.badlogic.ashley.core.Engine
+import com.badlogic.ashley.core.Family
 import com.badlogic.ashley.systems.IntervalSystem
 import com.badlogic.gdx.assets.AssetManager
 import ecs.component.*
 import ktx.ashley.entity
+import ktx.ashley.get
 import ktx.ashley.with
-import utils.Coordinate
+import utils.adjacentCoordinates
+import utils.toCoordinate
 
 
-class SpawnSystem(assets: AssetManager) : IntervalSystem(3f) {
+class SpawnSystem(assets: AssetManager) : IntervalSystem(7f) {
     private val enemyRegion = assets[TextureAtlasAssets.TowerDefence].findRegion("enemy")
     private val tileDirtRegion = assets[TextureAtlasAssets.TowerDefence].findRegion("tileDirt")
     private val playerRegion = assets[TextureAtlasAssets.BlackSmith].findRegion("dude")
@@ -24,7 +30,6 @@ class SpawnSystem(assets: AssetManager) : IntervalSystem(3f) {
         super.addedToEngine(engine)
         spawnMap()
         spawnPlayer()
-        spawnEnemy()
     }
 
     override fun updateInterval() {
@@ -67,16 +72,41 @@ class SpawnSystem(assets: AssetManager) : IntervalSystem(3f) {
         }
     }
 
+    private fun findEdges(occupiedCoordinates: List<Coordinates>): List<Route> {
+        val allCoordinates = (0 until MAP_SIZE_X).map { x ->
+            (0 until MAP_SIZE_Y).map { y ->
+                Coordinates(x, y)
+            }
+        }.flatten()
+
+        return allCoordinates.filter { !occupiedCoordinates.contains(it) }.map { coordinate ->
+            coordinate.adjacentCoordinates()
+                .filter { adjacent -> !occupiedCoordinates.contains(adjacent) }
+                .filter { adjacent -> !(adjacent.x < 0 || adjacent.y < 0 || adjacent.x >= MAP_SIZE_X || adjacent.y >= MAP_SIZE_Y) }
+                .map { adjacent -> Route(coordinate, adjacent) }
+        }.flatten()
+    }
+
     private fun spawnEnemy() {
+        val towers = engine.getEntitiesFor(
+            Family.one(BuildingBlockComponent::class.java, AttackTowerComponent::class.java).get()
+        )
+        val towerPositions = towers.mapNotNull { tower ->
+            tower[TransformComponent.mapper]?.bounds?.toCoordinate()
+        }
+        val edges = findEdges(towerPositions)
+        println("Edges: $edges")
+
+        val path = AlgorithmAStarImpl(edges)
+            .findPath(
+                begin = Coordinates(0, 0),
+                end = Coordinates(MAP_SIZE_X - 1, 0)
+            ).first
+        println("Path: $path")
+
         engine.entity {
             with<EnemyComponent> {
-                path = mutableListOf(
-                    Coordinate(1, 5),
-                    Coordinate(10, 5),
-                    Coordinate(10, 12),
-                    Coordinate(15, 12),
-                    Coordinate(MAP_SIZE_X - 1, 0),
-                )
+                this.path = path.toMutableList()
             }
             with<HealthComponent> {
                 health = maxHealth
