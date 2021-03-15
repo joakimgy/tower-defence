@@ -47,7 +47,6 @@ class ClickableSystem(
     }
 
     fun drawTransparentCircle(transform: TransformComponent, range: Float) {
-        batch.color = Color.DARK_GRAY
         batch.setColor(0f, 0f, 0f, 0.2f)
         batch.draw(
             circleRegion,

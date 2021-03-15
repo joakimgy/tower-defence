@@ -23,7 +23,7 @@ class GameScreen(
         // initialize entity engine
         engine.apply {
             addSystem(MoveSystem())
-            addSystem(RenderSystem(batch, camera))
+            addSystem(RenderSystem(batch, camera, assets))
             addSystem(InputSystem(camera, assets))
             addSystem(SpawnSystem(assets))
             addSystem(ClickableSystem(batch, camera, assets))

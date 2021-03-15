@@ -56,7 +56,9 @@ class SpawnSystem(assets: AssetManager) : IntervalSystem(3f) {
 
     private fun spawnEnemy() {
         engine.entity {
-            with<EnemyComponent>()
+            with<EnemyComponent> {
+                health = maxHealth
+            }
             with<RenderComponent> {
                 z = 1
                 sprite.setRegion(enemyRegion)
