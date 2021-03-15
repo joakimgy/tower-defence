@@ -28,7 +28,7 @@ class RenderSystem(
 
     private val greenHealthBar =
         createTexture(1, 1, Color.GREEN.apply { a = 0.5f })
-    val redHealthBar =
+    private val redHealthBar =
         createTexture(1, 1, Color.RED.apply { a = 0.5f })
     private val healthBarWidth = 64f
     private val healthBarHeight = 4f
@@ -52,24 +52,27 @@ class RenderSystem(
                 batch.draw(render.sprite, transform.bounds.x, transform.bounds.y)
             }
             entity[EnemyComponent.mapper]?.let { enemy ->
-                val healthPercentage = (enemy.health / enemy.maxHealth)
-                batch.draw(
-                    greenHealthBar,
-                    transform.bounds.x,
-                    transform.bounds.y + 50f,
-                    healthBarWidth * healthPercentage,
-                    healthBarHeight
-                )
-                batch.draw(
-                    redHealthBar,
-                    transform.bounds.x + healthBarWidth * healthPercentage,
-                    transform.bounds.y + 50f,
-                    healthBarWidth * (1 - healthPercentage),
-                    healthBarHeight
-                )
-
+                renderHealthBar(enemy, transform)
             }
         }
+    }
+
+    private fun renderHealthBar(enemy: EnemyComponent, transform: TransformComponent) {
+        val healthPercentage = (enemy.health / enemy.maxHealth)
+        batch.draw(
+            greenHealthBar,
+            transform.bounds.x,
+            transform.bounds.y + 50f,
+            healthBarWidth * healthPercentage,
+            healthBarHeight
+        )
+        batch.draw(
+            redHealthBar,
+            transform.bounds.x + healthBarWidth * healthPercentage,
+            transform.bounds.y + 50f,
+            healthBarWidth * (1 - healthPercentage),
+            healthBarHeight
+        )
     }
 
     private fun createTexture(width: Int, height: Int, color: Color): Texture {
