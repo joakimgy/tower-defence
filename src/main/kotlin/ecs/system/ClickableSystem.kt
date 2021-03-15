@@ -1,5 +1,6 @@
 package ecs.system
 
+import AttackTowerComponent
 import assets.TextureAtlasAssets
 import assets.get
 import com.badlogic.ashley.core.Entity
@@ -12,7 +13,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Vector3
 import ecs.component.ClickableComponent
-import ecs.component.TowerComponent
 import ecs.component.TransformComponent
 import ktx.ashley.allOf
 import ktx.ashley.get
@@ -25,14 +25,14 @@ class ClickableSystem(
     private val camera: OrthographicCamera,
     assets: AssetManager
 ) : IteratingSystem(
-    allOf(ClickableComponent::class, TransformComponent::class).get(),
+    allOf(ClickableComponent::class, TransformComponent::class, AttackTowerComponent::class).get(),
 ) {
     private val circleRegion = assets[TextureAtlasAssets.TowerDefence].findRegion("circle")
 
 
     override fun processEntity(entity: Entity, deltaTime: Float) {
         entity[TransformComponent.mapper]?.let { transform ->
-            entity[TowerComponent.mapper]?.let { tower ->
+            entity[AttackTowerComponent.mapper]?.let { tower ->
                 if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
                     val clickPosition = Vector3(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f)
                     camera.unproject(clickPosition)

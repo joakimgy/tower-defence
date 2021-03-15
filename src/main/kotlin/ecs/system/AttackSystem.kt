@@ -1,5 +1,6 @@
 package ecs.system
 
+import AttackTowerComponent
 import assets.TextureAtlasAssets
 import assets.get
 import com.badlogic.ashley.core.Entity
@@ -19,7 +20,7 @@ import utils.getCenterXY
 class AttackSystem(
     assets: AssetManager
 ) : IntervalIteratingSystem(
-    allOf(TowerComponent::class, TransformComponent::class).get(), 0.5f
+    allOf(AttackTowerComponent::class, TransformComponent::class).get(), 0.5f
 ) {
 
     private val projectileRegion = assets[TextureAtlasAssets.TowerDefence].findRegion("projectile")
@@ -28,7 +29,7 @@ class AttackSystem(
         val enemyEntities = engine.getEntitiesFor(Family.all(EnemyComponent::class.java).get())
 
         entity[TransformComponent.mapper]?.let { towerTransform ->
-            entity[TowerComponent.mapper]?.let { tower ->
+            entity[AttackTowerComponent.mapper]?.let { tower ->
                 val towerRange = Circle().apply {
                     radius = tower.range
                     x = towerTransform.bounds.getCenterXY().x
@@ -63,14 +64,6 @@ class AttackSystem(
                                 sprite.setRegion(projectileRegion)
                             }
                         }
-                        /*
-                        enemyComponent.health -= tower.damage
-                        if (enemyComponent.health <= 0f) {
-                            engine.removeEntity(enemyEntity)
-                        } else {
-                            println("Tower attacked enemy for a ${tower.damage}. ${enemyComponent.health} health remains.")
-                        }
-                         */
                     }
                 }
             }
