@@ -9,7 +9,7 @@ import ecs.component.*
 import ktx.ashley.entity
 import ktx.ashley.with
 
-class SpawnSystem(assets: AssetManager) : IntervalSystem(10f) {
+class SpawnSystem(assets: AssetManager) : IntervalSystem(3f) {
     private val enemyRegion = assets[TextureAtlasAssets.TowerDefence].findRegion("enemy")
     private val dirtRegion = assets[TextureAtlasAssets.TowerDefence].findRegion("dirt")
     private val playerRegion = assets[TextureAtlasAssets.BlackSmith].findRegion("dude")
@@ -62,8 +62,8 @@ class SpawnSystem(assets: AssetManager) : IntervalSystem(10f) {
                 sprite.setRegion(enemyRegion)
             }
             with<MoveComponent> {
-                speed.x = 10f
-                speed.y = 10f
+                speed.x = 40f
+                speed.y = 40f
             }
             with<TransformComponent> { bounds.set(64f, 62f, 64f, 64f) }
         }

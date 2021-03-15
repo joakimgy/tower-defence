@@ -52,11 +52,11 @@ class InputSystem(
                             val posY = transform.bounds.y
                             bounds.set(posX - posX.rem(64f), posY - posY.rem(64f), 64f, 64f)
                         }
-                        with<MoveComponent>()
                         with<RenderComponent> {
                             sprite.setRegion(assets[TextureAtlasAssets.TowerDefence].findRegion("buildingBlock"))
                         }
                         with<ClickableComponent>()
+                        with<TowerComponent>()
                     }
                 }
             }

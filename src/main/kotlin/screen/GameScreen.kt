@@ -27,6 +27,7 @@ class GameScreen(
             addSystem(InputSystem(camera, assets))
             addSystem(SpawnSystem(assets))
             addSystem(ClickableSystem(batch, camera, assets))
+            addSystem(AttackSystem(engine))
         }
 
     }

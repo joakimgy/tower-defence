@@ -12,7 +12,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Vector3
 import ecs.component.ClickableComponent
+import ecs.component.TowerComponent
 import ecs.component.TransformComponent
+import ecs.component.getCenterXY
 import ktx.ashley.allOf
 import ktx.ashley.get
 import ktx.graphics.use
@@ -30,28 +32,30 @@ class ClickableSystem(
 
     override fun processEntity(entity: Entity, deltaTime: Float) {
         entity[TransformComponent.mapper]?.let { transform ->
-            if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
-                val clickPosition = Vector3(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f)
-                camera.unproject(clickPosition)
-                if (transform.bounds.contains(clickPosition.x, clickPosition.y)) {
-                    batch.use {
-                        drawTransparentCircle(transform)
+            entity[TowerComponent.mapper]?.let { tower ->
+                if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
+                    val clickPosition = Vector3(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f)
+                    camera.unproject(clickPosition)
+                    if (transform.bounds.contains(clickPosition.x, clickPosition.y)) {
+                        batch.use {
+                            drawTransparentCircle(transform, tower.range)
+                        }
                     }
                 }
             }
         }
     }
 
-    fun drawTransparentCircle(transform: TransformComponent) {
+    fun drawTransparentCircle(transform: TransformComponent, range: Float) {
         batch.color = Color.DARK_GRAY
-        batch.setColor(0f, 0f, 0f, 0.07f);
+        batch.setColor(0f, 0f, 0f, 0.07f)
         batch.draw(
             circleRegion,
-            transform.bounds.x - 68f,
-            transform.bounds.y - 68f,
-            200f,
-            200f
+            transform.bounds.getCenterXY().x - range,
+            transform.bounds.getCenterXY().y - range,
+            range * 2f,
+            range * 2f
         )
-        batch.color = Color.WHITE;
+        batch.color = Color.WHITE
     }
 }

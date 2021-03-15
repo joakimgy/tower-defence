@@ -3,10 +3,11 @@ package ecs.component
 import com.badlogic.ashley.core.Component
 import ktx.ashley.mapperFor
 
-class EnemyComponent : Component {
+class TowerComponent : Component {
     companion object {
-        val mapper = mapperFor<EnemyComponent>()
+        val mapper = mapperFor<TowerComponent>()
     }
 
-    val health = 100f;
+    val range = 100f
+
 }
