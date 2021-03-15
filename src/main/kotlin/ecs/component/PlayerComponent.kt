@@ -8,5 +8,4 @@ class PlayerComponent : Component {
         val mapper = mapperFor<PlayerComponent>()
     }
 
-    val coins = 56
 }

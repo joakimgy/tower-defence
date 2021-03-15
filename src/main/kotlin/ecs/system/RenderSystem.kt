@@ -2,7 +2,6 @@ package ecs.system
 
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.SortedIteratingSystem
-import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Pixmap
@@ -18,8 +17,7 @@ import ktx.graphics.use
 
 class RenderSystem(
     private val batch: Batch,
-    private val camera: OrthographicCamera,
-    private val assets: AssetManager
+    private val camera: OrthographicCamera
 ) : SortedIteratingSystem(
     allOf(TransformComponent::class, RenderComponent::class).get(),
     // compareBy is used to render entities by their z-index (=player is drawn in the background; raindrops are drawn in the foreground)
@@ -48,9 +46,11 @@ class RenderSystem(
 
     override fun processEntity(entity: Entity, deltaTime: Float) {
         entity[TransformComponent.mapper]?.let { transform ->
+            // Render all sprites
             entity[RenderComponent.mapper]?.let { render ->
                 batch.draw(render.sprite, transform.bounds.x, transform.bounds.y)
             }
+            // Render health bar for enemies
             entity[EnemyComponent.mapper]?.let { enemy ->
                 renderHealthBar(enemy, transform)
             }
@@ -75,6 +75,12 @@ class RenderSystem(
         )
     }
 
+    /**
+     * Create a rectangle texture
+     * @param width Width of texture
+     * @param height Heigth of texture
+     * @param color Color of texture
+     */
     private fun createTexture(width: Int, height: Int, color: Color): Texture {
         val pixmap = Pixmap(width, height, Pixmap.Format.RGBA8888)
         pixmap.setColor(color)

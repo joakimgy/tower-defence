@@ -38,9 +38,16 @@ circle
   orig: 64, 64
   offset: 0, 0
   index: -1
-rectangle
+projectile
   rotate: false
-  xy: 960, 0
+  xy: 1216, 706
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+tileDirt
+  rotate: false
+  xy: 960, 128
   size: 64, 64
   orig: 64, 64
   offset: 0, 0

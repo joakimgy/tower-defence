@@ -23,7 +23,7 @@ import utils.getCenterXY
 class ClickableSystem(
     private val batch: Batch,
     private val camera: OrthographicCamera,
-    private val assets: AssetManager
+    assets: AssetManager
 ) : IteratingSystem(
     allOf(ClickableComponent::class, TransformComponent::class).get(),
 ) {

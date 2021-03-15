@@ -11,7 +11,7 @@ import ktx.ashley.with
 
 class SpawnSystem(assets: AssetManager) : IntervalSystem(3f) {
     private val enemyRegion = assets[TextureAtlasAssets.TowerDefence].findRegion("enemy")
-    private val dirtRegion = assets[TextureAtlasAssets.TowerDefence].findRegion("dirt")
+    private val tileDirtRegion = assets[TextureAtlasAssets.TowerDefence].findRegion("tileDirt")
     private val playerRegion = assets[TextureAtlasAssets.BlackSmith].findRegion("dude")
 
     override fun addedToEngine(engine: Engine?) {
@@ -35,7 +35,7 @@ class SpawnSystem(assets: AssetManager) : IntervalSystem(3f) {
                 engine.entity {
                     with<TransformComponent> { bounds.set(x * 64f, y * 62f, 64f, 64f) }
                     with<RenderComponent> {
-                        sprite.setRegion(dirtRegion)
+                        sprite.setRegion(tileDirtRegion)
                     }
                 }
             }

@@ -9,5 +9,5 @@ class MoveComponent : Component {
         val mapper = mapperFor<MoveComponent>()
     }
 
-    val speed = Vector2()
+    var speed = Vector2()
 }
