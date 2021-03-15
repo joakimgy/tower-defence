@@ -1,5 +1,8 @@
 package ecs.system
 
+import MAP_SIZE_X
+import MAP_SIZE_Y
+import TILE_SIZE
 import assets.TextureAtlasAssets
 import assets.get
 import com.badlogic.ashley.core.Engine
@@ -8,6 +11,7 @@ import com.badlogic.gdx.assets.AssetManager
 import ecs.component.*
 import ktx.ashley.entity
 import ktx.ashley.with
+
 
 class SpawnSystem(assets: AssetManager) : IntervalSystem(3f) {
     private val enemyRegion = assets[TextureAtlasAssets.TowerDefence].findRegion("enemy")
@@ -30,10 +34,10 @@ class SpawnSystem(assets: AssetManager) : IntervalSystem(3f) {
      */
 
     private fun spawnMap() {
-        (1..10).forEach() { x ->
-            (1..6).forEach { y ->
+        (1..MAP_SIZE_X).forEach() { x ->
+            (1..MAP_SIZE_Y).forEach { y ->
                 engine.entity {
-                    with<TransformComponent> { bounds.set(x * 64f, y * 62f, 64f, 64f) }
+                    with<TransformComponent> { bounds.set(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE) }
                     with<RenderComponent> {
                         sprite.setRegion(tileDirtRegion)
                     }
@@ -67,7 +71,7 @@ class SpawnSystem(assets: AssetManager) : IntervalSystem(3f) {
                 speed.x = 40f
                 speed.y = 40f
             }
-            with<TransformComponent> { bounds.set(64f, 62f, 64f, 64f) }
+            with<TransformComponent> { bounds.set(TILE_SIZE, TILE_SIZE, TILE_SIZE, TILE_SIZE) }
         }
     }
 }

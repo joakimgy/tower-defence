@@ -1,5 +1,6 @@
 package ecs.system
 
+import TILE_SIZE
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.SortedIteratingSystem
 import com.badlogic.gdx.graphics.Color
@@ -28,7 +29,7 @@ class RenderSystem(
         createTexture(1, 1, Color.GREEN.apply { a = 0.5f })
     private val redHealthBar =
         createTexture(1, 1, Color.RED.apply { a = 0.5f })
-    private val healthBarWidth = 64f
+    private val healthBarWidth = TILE_SIZE
     private val healthBarHeight = 4f
 
     override fun update(deltaTime: Float) {
@@ -48,7 +49,7 @@ class RenderSystem(
         entity[TransformComponent.mapper]?.let { transform ->
             // Render all sprites
             entity[RenderComponent.mapper]?.let { render ->
-                batch.draw(render.sprite, transform.bounds.x, transform.bounds.y)
+                batch.draw(render.sprite, transform.bounds.x, transform.bounds.y, TILE_SIZE, TILE_SIZE)
             }
             // Render health bar for enemies
             entity[EnemyComponent.mapper]?.let { enemy ->
@@ -62,14 +63,14 @@ class RenderSystem(
         batch.draw(
             greenHealthBar,
             transform.bounds.x,
-            transform.bounds.y + 50f,
+            transform.bounds.y + TILE_SIZE,
             healthBarWidth * healthPercentage,
             healthBarHeight
         )
         batch.draw(
             redHealthBar,
             transform.bounds.x + healthBarWidth * healthPercentage,
-            transform.bounds.y + 50f,
+            transform.bounds.y + TILE_SIZE,
             healthBarWidth * (1 - healthPercentage),
             healthBarHeight
         )

@@ -1,5 +1,6 @@
 package ecs.system
 
+import TILE_SIZE
 import assets.TextureAtlasAssets
 import assets.get
 import com.badlogic.ashley.core.Entity
@@ -17,6 +18,7 @@ import ktx.ashley.allOf
 import ktx.ashley.entity
 import ktx.ashley.get
 import ktx.ashley.with
+import utils.getCenterXY
 
 class InputSystem(
     private val camera: OrthographicCamera,
@@ -57,7 +59,7 @@ class InputSystem(
                 }
                 if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
                     buildTower(
-                        Vector2(transform.bounds.x, transform.bounds.y),
+                        Vector2(transform.bounds.getCenterXY().x, transform.bounds.getCenterXY().y),
                         existingTowerBounds,
                         BuildingBlockComponent()
                     )
@@ -68,10 +70,10 @@ class InputSystem(
 
     private fun buildTower(position: Vector2, existingTowerBounds: List<Rectangle>, tower: TowerComponent) {
         val towerBounds = Rectangle(
-            position.x - position.x.rem(64f),
-            position.y - position.y.rem(64f),
-            64f,
-            64f
+            position.x - position.x.rem(TILE_SIZE),
+            position.y - position.y.rem(TILE_SIZE),
+            TILE_SIZE,
+            TILE_SIZE
         )
         if (!existingTowerBounds.contains(towerBounds)) {
 

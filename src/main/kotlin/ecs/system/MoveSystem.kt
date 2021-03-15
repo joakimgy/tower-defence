@@ -1,5 +1,6 @@
 package ecs.system
 
+import TILE_SIZE
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.math.MathUtils
@@ -13,8 +14,10 @@ class MoveSystem : IteratingSystem(allOf(TransformComponent::class, MoveComponen
         entity[TransformComponent.mapper]?.let { transform ->
             entity[MoveComponent.mapper]?.let { move ->
                 // make sure the entities stay within the screen bounds
-                transform.bounds.x = MathUtils.clamp(transform.bounds.x + move.speed.x * deltaTime, 64f, 800f - 128f)
-                transform.bounds.y = MathUtils.clamp(transform.bounds.y + move.speed.y * deltaTime, 64f, 480f - 64f)
+                transform.bounds.x =
+                    MathUtils.clamp(transform.bounds.x + move.speed.x * deltaTime, TILE_SIZE, 800f - 128f)
+                transform.bounds.y =
+                    MathUtils.clamp(transform.bounds.y + move.speed.y * deltaTime, TILE_SIZE, 480f - 64f)
             }
         }
     }
