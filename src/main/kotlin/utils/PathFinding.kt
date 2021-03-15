@@ -29,24 +29,3 @@ class AlgorithmAStarImpl(edges: List<Route>) : AlgorithmAStar<Coordinates, Route
         return Route(from, to)
     }
 }
-
-fun main() {
-    val routes = listOf(
-        Route(Coordinates(1, 1), Coordinates(1, 3)),
-        Route(Coordinates(1, 1), Coordinates(5, 1)),
-        Route(Coordinates(5, 1), Coordinates(2, 2)),
-        Route(Coordinates(1, 3), Coordinates(2, 2))
-    )
-
-    val result = AlgorithmAStarImpl(routes)
-        .findPath(
-            begin = Coordinates(1, 1),
-            end = Coordinates(2, 2)
-        )
-
-    val pathString = result.first.joinToString(separator = ", ") { "[${it.x}, ${it.y}]" }
-
-    println("Result:")
-    println("  Path: $pathString")
-    println("  Cost: ${result.second}")
-}

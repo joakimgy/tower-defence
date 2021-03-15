@@ -20,8 +20,6 @@ class PathfindingSystem :
                     val destination = enemy.path.firstOrNull()
 
                     if (destination == null) {
-                        println("Destination null")
-
                         move.speed.let {
                             it.x = 0f
                             it.y = 0f
@@ -46,13 +44,11 @@ class PathfindingSystem :
                         10f
                     )
                     if (hitbox.contains(destination.toVector())) {
-                        println("Waypoint reach")
                         enemy.path.removeFirst()
                     }
 
                     move.speed.let {
                         val newDestination = enemy.path.firstOrNull()
-                        println("New destination $newDestination")
                         if (newDestination == null) {
                             it.x = 0f
                             it.y = 0f

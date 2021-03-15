@@ -9,7 +9,7 @@ class EnemyComponent : Component {
         val mapper = mapperFor<EnemyComponent>()
     }
 
-    var speed = 300f
+    var speed = 50f
 
     var path: MutableList<Coordinates> = mutableListOf()
 

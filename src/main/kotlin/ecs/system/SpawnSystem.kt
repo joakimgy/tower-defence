@@ -20,7 +20,7 @@ import utils.adjacentCoordinates
 import utils.toCoordinate
 
 
-class SpawnSystem(assets: AssetManager) : IntervalSystem(7f) {
+class SpawnSystem(assets: AssetManager) : IntervalSystem(3f) {
     private val enemyRegion = assets[TextureAtlasAssets.TowerDefence].findRegion("enemy")
     private val tileDirtRegion = assets[TextureAtlasAssets.TowerDefence].findRegion("tileDirt")
     private val playerRegion = assets[TextureAtlasAssets.BlackSmith].findRegion("dude")
@@ -95,14 +95,11 @@ class SpawnSystem(assets: AssetManager) : IntervalSystem(7f) {
             tower[TransformComponent.mapper]?.bounds?.toCoordinate()
         }
         val edges = findEdges(towerPositions)
-        println("Edges: $edges")
-
         val path = AlgorithmAStarImpl(edges)
             .findPath(
                 begin = Coordinates(0, 0),
                 end = Coordinates(MAP_SIZE_X - 1, 0)
             ).first
-        println("Path: $path")
 
         engine.entity {
             with<EnemyComponent> {
