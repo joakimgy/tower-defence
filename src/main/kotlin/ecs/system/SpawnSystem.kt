@@ -17,6 +17,7 @@ class SpawnSystem(assets: AssetManager) : IntervalSystem(3f) {
     private val enemyRegion = assets[TextureAtlasAssets.TowerDefence].findRegion("enemy")
     private val tileDirtRegion = assets[TextureAtlasAssets.TowerDefence].findRegion("tileDirt")
     private val playerRegion = assets[TextureAtlasAssets.BlackSmith].findRegion("dude")
+    private val destinationRegion = assets[TextureAtlasAssets.TowerDefence].findRegion("star")
 
     override fun addedToEngine(engine: Engine?) {
         super.addedToEngine(engine)
@@ -42,6 +43,12 @@ class SpawnSystem(assets: AssetManager) : IntervalSystem(3f) {
                         sprite.setRegion(tileDirtRegion)
                     }
                 }
+            }
+        }
+        engine.entity {
+            with<TransformComponent> { bounds.set(MAP_SIZE_X * TILE_SIZE, TILE_SIZE, TILE_SIZE, TILE_SIZE) }
+            with<RenderComponent> {
+                sprite.setRegion(destinationRegion)
             }
         }
     }

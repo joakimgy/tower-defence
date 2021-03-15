@@ -1,5 +1,6 @@
 package ecs.component
 
+import MAP_SIZE_X
 import com.badlogic.ashley.core.Component
 import ktx.ashley.mapperFor
 import utils.Coordinate
@@ -18,7 +19,7 @@ class EnemyComponent : Component {
         Coordinate(10, 5),
         Coordinate(10, 12),
         Coordinate(15, 12),
-        Coordinate(2, 2),
+        Coordinate(MAP_SIZE_X, 0),
     )
 
 }

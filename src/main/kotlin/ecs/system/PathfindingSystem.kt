@@ -15,10 +15,8 @@ class PathfindingSystem :
         entity[EnemyComponent.mapper]?.let { enemy ->
             entity[TransformComponent.mapper]?.let { transform ->
                 entity[MoveComponent.mapper]?.let { move ->
-                    // Path finding
                     val destination = enemy.path.firstOrNull()
                     if (destination == null) {
-                        println("Destination is null")
                         move.speed.let {
                             it.x = 0f
                             it.y = 0f
@@ -27,19 +25,15 @@ class PathfindingSystem :
                     }
 
                     if (transform.bounds.contains(destination.toVector())) {
-                        println("Destination is reached")
                         enemy.path.removeFirst()
                     }
 
                     move.speed.let {
                         val newDestination = enemy.path.firstOrNull()
                         if (newDestination == null) {
-                            println("FINISHED")
                             it.x = 0f
                             it.y = 0f
                         } else {
-                            println("New destination")
-                            println("Enemy at ${transform.bounds} going to destination ${newDestination.toVector()}")
                             it.x = newDestination.toVector().x - transform.bounds.x
                             it.y = newDestination.toVector().y - transform.bounds.y
                             it.setLength(enemy.speed)
