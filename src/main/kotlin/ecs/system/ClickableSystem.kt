@@ -1,6 +1,5 @@
 package ecs.system
 
-import AttackTowerComponent
 import assets.TextureAtlasAssets
 import assets.get
 import com.badlogic.ashley.core.Entity
@@ -12,6 +11,7 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Vector3
+import ecs.component.AttackTowerComponent
 import ecs.component.ClickableComponent
 import ecs.component.TransformComponent
 import ktx.ashley.allOf
@@ -46,7 +46,7 @@ class ClickableSystem(
         }
     }
 
-    fun drawTransparentCircle(transform: TransformComponent, range: Float) {
+    private fun drawTransparentCircle(transform: TransformComponent, range: Float) {
         batch.setColor(0f, 0f, 0f, 0.2f)
         batch.draw(
             circleRegion,

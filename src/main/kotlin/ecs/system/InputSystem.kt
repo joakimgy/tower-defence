@@ -1,6 +1,5 @@
 package ecs.system
 
-import AttackTowerComponent
 import assets.TextureAtlasAssets
 import assets.get
 import com.badlogic.ashley.core.Entity
@@ -18,7 +17,6 @@ import ktx.ashley.allOf
 import ktx.ashley.entity
 import ktx.ashley.get
 import ktx.ashley.with
-import utils.Towers
 
 class InputSystem(
     private val camera: OrthographicCamera,
@@ -55,20 +53,20 @@ class InputSystem(
                 if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
                     touchPos.set(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f)
                     camera.unproject(touchPos)
-                    buildTower(Vector2(touchPos.x, touchPos.y), existingTowerBounds, Towers.ATTACK)
+                    buildTower(Vector2(touchPos.x, touchPos.y), existingTowerBounds, AttackTowerComponent())
                 }
                 if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
                     buildTower(
                         Vector2(transform.bounds.x, transform.bounds.y),
                         existingTowerBounds,
-                        Towers.BUILDING_BLOCK
+                        BuildingBlockComponent()
                     )
                 }
             }
         }
     }
 
-    private fun buildTower(position: Vector2, existingTowerBounds: List<Rectangle>, tower: Towers) {
+    private fun buildTower(position: Vector2, existingTowerBounds: List<Rectangle>, tower: TowerComponent) {
         val towerBounds = Rectangle(
             position.x - position.x.rem(64f),
             position.y - position.y.rem(64f),
@@ -76,23 +74,26 @@ class InputSystem(
             64f
         )
         if (!existingTowerBounds.contains(towerBounds)) {
+
             engine.entity {
                 with<TransformComponent> {
                     bounds.set(towerBounds)
                 }
-                with<RenderComponent> {
-                    when (tower) {
-                        Towers.ATTACK -> sprite.setRegion(turretRegion)
-                        Towers.BUILDING_BLOCK -> sprite.setRegion(buildingBlockRegion)
-                    }
-
-                }
                 with<ClickableComponent>()
                 when (tower) {
-                    Towers.ATTACK -> with<AttackTowerComponent>()
-                    Towers.BUILDING_BLOCK -> with<BuildingBlockComponent>()
+                    is AttackTowerComponent -> {
+                        with<RenderComponent> {
+                            sprite.setRegion(turretRegion)
+                        }
+                        with<AttackTowerComponent>()
+                    }
+                    is BuildingBlockComponent -> {
+                        with<RenderComponent> {
+                            sprite.setRegion(buildingBlockRegion)
+                        }
+                        with<BuildingBlockComponent>()
+                    }
                 }
-
             }
         }
     }

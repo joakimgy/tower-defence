@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.4.10"
+    kotlin("jvm") version "1.4.31"
     id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
     application
 }
@@ -32,6 +32,7 @@ tasks.test {
 
 tasks.withType<KotlinCompile>() {
     kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.languageVersion = "1.5"
 }
 
 application {

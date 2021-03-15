@@ -1,6 +1,5 @@
 package ecs.system
 
-import AttackTowerComponent
 import assets.TextureAtlasAssets
 import assets.get
 import com.badlogic.ashley.core.Entity
