@@ -3,9 +3,9 @@ package ecs.component
 import com.badlogic.ashley.core.Component
 import ktx.ashley.mapperFor
 
-sealed interface TowerComponent : Component
+sealed class TowerComponent : Component
 
-class AttackTowerComponent : TowerComponent {
+class AttackTowerComponent : TowerComponent() {
     companion object {
         val mapper = mapperFor<AttackTowerComponent>()
     }
@@ -14,7 +14,7 @@ class AttackTowerComponent : TowerComponent {
     val damage = 20f
 }
 
-class BuildingBlockComponent : TowerComponent {
+class BuildingBlockComponent : TowerComponent() {
     companion object {
         val mapper = mapperFor<BuildingBlockComponent>()
     }
