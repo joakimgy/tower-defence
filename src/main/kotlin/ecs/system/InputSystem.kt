@@ -3,11 +3,13 @@ package ecs.system
 import assets.TextureAtlasAssets
 import assets.get
 import com.badlogic.ashley.core.Entity
+import com.badlogic.ashley.core.Family
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector3
 import ecs.component.*
 import ktx.ashley.allOf
@@ -26,6 +28,8 @@ class InputSystem(
     private val touchPos = Vector3()
 
     override fun processEntity(entity: Entity, deltaTime: Float) {
+        val towerComponents =
+            engine.getEntitiesFor(Family.all(TowerComponent::class.java, TransformComponent::class.java).get())
 
         entity[TransformComponent.mapper]?.let { transform ->
             entity[MoveComponent.mapper]?.let { move ->
@@ -46,17 +50,26 @@ class InputSystem(
                     else -> move.speed.y = 0f
                 }
                 if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-                    engine.entity {
-                        with<TransformComponent> {
-                            val posX = transform.bounds.x
-                            val posY = transform.bounds.y
-                            bounds.set(posX - posX.rem(64f), posY - posY.rem(64f), 64f, 64f)
+                    val towerBounds = Rectangle(
+                        transform.bounds.x - transform.bounds.x.rem(64f),
+                        transform.bounds.y - transform.bounds.y.rem(64f),
+                        64f,
+                        64f
+                    )
+                    val existingTowerBounds =
+                        towerComponents.mapNotNull { it[TransformComponent.mapper]?.bounds }
+
+                    if (!existingTowerBounds.contains(towerBounds)) {
+                        engine.entity {
+                            with<TransformComponent> {
+                                bounds.set(towerBounds)
+                            }
+                            with<RenderComponent> {
+                                sprite.setRegion(assets[TextureAtlasAssets.TowerDefence].findRegion("buildingBlock"))
+                            }
+                            with<ClickableComponent>()
+                            with<TowerComponent>()
                         }
-                        with<RenderComponent> {
-                            sprite.setRegion(assets[TextureAtlasAssets.TowerDefence].findRegion("buildingBlock"))
-                        }
-                        with<ClickableComponent>()
-                        with<TowerComponent>()
                     }
                 }
             }

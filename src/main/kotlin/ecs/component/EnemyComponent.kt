@@ -8,5 +8,5 @@ class EnemyComponent : Component {
         val mapper = mapperFor<EnemyComponent>()
     }
 
-    var health = 60f
+    var health = 130f
 }
