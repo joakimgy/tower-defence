@@ -30,7 +30,7 @@ class PathfindingSystem :
                         if (player != null) {
                             val playerHealth = player[HealthComponent.mapper]
                             playerHealth?.let {
-                                it.health -= 10f
+                                it.health -= 20f
                             }
                         }
                         return engine.removeEntity(entity)

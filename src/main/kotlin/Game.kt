@@ -8,6 +8,7 @@ import ktx.app.KtxGame
 import ktx.app.KtxScreen
 import ktx.inject.Context
 import ktx.inject.register
+import screen.GameOverScreen
 import screen.GameScreen
 import screen.LoadingScreen
 
@@ -17,6 +18,7 @@ const val TILE_SIZE = 32f
 
 class Game : KtxGame<KtxScreen>() {
     private val context = Context()
+
 
     override fun create() {
         context.register {
@@ -29,7 +31,9 @@ class Game : KtxGame<KtxScreen>() {
             bindSingleton(PooledEngine())
 
             addScreen(LoadingScreen(this@Game, inject(), inject(), inject(), inject()))
-            addScreen(GameScreen(inject(), inject(), inject(), inject()))
+            addScreen(GameScreen(this@Game, inject(), inject(), inject(), inject()))
+            addScreen(GameOverScreen(inject(), inject(), inject(), inject()))
+
 
         }
         setScreen<LoadingScreen>()
@@ -40,4 +44,5 @@ class Game : KtxGame<KtxScreen>() {
         context.dispose()
         super.dispose()
     }
+
 }

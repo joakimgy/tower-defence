@@ -1,5 +1,6 @@
 package screen
 
+import Game
 import assets.MusicAssets
 import assets.get
 import com.badlogic.ashley.core.PooledEngine
@@ -10,6 +11,7 @@ import ecs.system.*
 import ktx.app.KtxScreen
 
 class GameScreen(
+    private val game: Game,
     private val batch: Batch,
     private val assets: AssetManager,
     private val camera: OrthographicCamera,
@@ -30,7 +32,11 @@ class GameScreen(
             addSystem(AttackSystem(assets))
             addSystem(ProjectileSystem())
             addSystem(PathfindingSystem())
-            addSystem(HealthSystem())
+            addSystem(HealthSystem(gameOver = {
+                game.removeScreen<GameScreen>()
+                dispose()
+                game.setScreen<GameOverScreen>()
+            }))
         }
 
     }
