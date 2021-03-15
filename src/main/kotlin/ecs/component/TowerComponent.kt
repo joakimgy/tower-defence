@@ -9,5 +9,6 @@ class TowerComponent : Component {
     }
 
     val range = 100f
+    val damage = 10f
 
 }

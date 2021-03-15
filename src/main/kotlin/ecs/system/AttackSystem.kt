@@ -2,7 +2,7 @@ package ecs.system
 
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.PooledEngine
-import com.badlogic.ashley.systems.IteratingSystem
+import com.badlogic.ashley.systems.IntervalIteratingSystem
 import com.badlogic.gdx.math.Circle
 import ecs.component.EnemyComponent
 import ecs.component.TowerComponent
@@ -15,29 +15,39 @@ import utils.getCenterXY
 
 class AttackSystem(
     private val engine: PooledEngine
-) : IteratingSystem(
-    allOf(TowerComponent::class, TransformComponent::class).get(),
+) : IntervalIteratingSystem(
+    allOf(TowerComponent::class, TransformComponent::class).get(), 1f
 ) {
 
 
-    override fun processEntity(entity: Entity, deltaTime: Float) {
+    override fun processEntity(entity: Entity) {
         val enemyEntities = engine.entities.filter { it.contains(EnemyComponent.mapper) }
 
-        entity[TransformComponent.mapper]?.let { transform ->
+        entity[TransformComponent.mapper]?.let { towerTransform ->
             entity[TowerComponent.mapper]?.let { tower ->
                 val range = Circle().apply {
                     radius = tower.range
-                    x = transform.bounds.getCenterXY().x
-                    y = transform.bounds.getCenterXY().y
+                    x = towerTransform.bounds.getCenterXY().x
+                    y = towerTransform.bounds.getCenterXY().y
                 }
                 enemyEntities.forEach {
-                    val enemy = it[TransformComponent.mapper]
-                    if (enemy != null && range.contains(
-                            enemy.bounds.getCenterXY().x,
-                            enemy.bounds.getCenterXY().y
+                    val enemyTransform = it[TransformComponent.mapper]
+                    val enemyComponent = it[EnemyComponent.mapper]
+                    if (enemyComponent == null || enemyTransform == null) {
+                        return@forEach
+                    }
+
+                    if (range.contains(
+                            enemyTransform.bounds.getCenterXY().x,
+                            enemyTransform.bounds.getCenterXY().y
                         )
                     ) {
-                        it.removeAll()
+                        enemyComponent.health -= tower.damage
+                        if (enemyComponent.health <= 0f) {
+                            it.removeAll()
+                        } else {
+                            println("Tower attacked enemy for a ${tower.damage}. ${enemyComponent.health} health remains.")
+                        }
                     }
                 }
             }
