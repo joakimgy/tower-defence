@@ -11,7 +11,7 @@ import ktx.inject.register
 import screen.GameScreen
 import screen.LoadingScreen
 
-const val MAP_SIZE_X = 22
+const val MAP_SIZE_X = 23
 const val MAP_SIZE_Y = 13
 const val TILE_SIZE = 32f
 

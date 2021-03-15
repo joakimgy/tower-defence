@@ -1,5 +1,7 @@
 package ecs.system
 
+import MAP_SIZE_X
+import MAP_SIZE_Y
 import TILE_SIZE
 import assets.TextureAtlasAssets
 import assets.get
@@ -75,7 +77,13 @@ class InputSystem(
             TILE_SIZE,
             TILE_SIZE
         )
-        if (!existingTowerBounds.contains(towerBounds)) {
+        val mapBounds = Rectangle(
+            TILE_SIZE,
+            TILE_SIZE,
+            MAP_SIZE_X * TILE_SIZE,
+            MAP_SIZE_Y * TILE_SIZE
+        )
+        if (!existingTowerBounds.contains(towerBounds) and mapBounds.contains(towerBounds.getCenterXY())) {
 
             engine.entity {
                 with<TransformComponent> {

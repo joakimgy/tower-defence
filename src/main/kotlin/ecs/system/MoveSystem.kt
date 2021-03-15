@@ -15,9 +15,9 @@ class MoveSystem : IteratingSystem(allOf(TransformComponent::class, MoveComponen
             entity[MoveComponent.mapper]?.let { move ->
                 // make sure the entities stay within the screen bounds
                 transform.bounds.x =
-                    MathUtils.clamp(transform.bounds.x + move.speed.x * deltaTime, TILE_SIZE, 800f - 128f)
+                    MathUtils.clamp(transform.bounds.x + move.speed.x * deltaTime, TILE_SIZE, 800f - TILE_SIZE * 2)
                 transform.bounds.y =
-                    MathUtils.clamp(transform.bounds.y + move.speed.y * deltaTime, TILE_SIZE, 480f - 64f)
+                    MathUtils.clamp(transform.bounds.y + move.speed.y * deltaTime, TILE_SIZE, 480f - TILE_SIZE * 2)
             }
         }
     }
