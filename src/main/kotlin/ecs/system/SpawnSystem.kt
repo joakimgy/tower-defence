@@ -11,6 +11,7 @@ import com.badlogic.gdx.assets.AssetManager
 import ecs.component.*
 import ktx.ashley.entity
 import ktx.ashley.with
+import utils.Coordinate
 
 
 class SpawnSystem(assets: AssetManager) : IntervalSystem(3f) {
@@ -56,6 +57,7 @@ class SpawnSystem(assets: AssetManager) : IntervalSystem(3f) {
     private fun spawnPlayer() {
         engine.entity {
             with<PlayerComponent>()
+            with<HealthComponent>()
             with<TransformComponent> { bounds.set(800f / 2f, 480f / 2f, 24f, 32f) }
             with<MoveComponent>()
             with<RenderComponent> {
@@ -68,6 +70,15 @@ class SpawnSystem(assets: AssetManager) : IntervalSystem(3f) {
     private fun spawnEnemy() {
         engine.entity {
             with<EnemyComponent> {
+                path = mutableListOf(
+                    Coordinate(1, 5),
+                    Coordinate(10, 5),
+                    Coordinate(10, 12),
+                    Coordinate(15, 12),
+                    Coordinate(MAP_SIZE_X - 1, 0),
+                )
+            }
+            with<HealthComponent> {
                 health = maxHealth
             }
             with<RenderComponent> {

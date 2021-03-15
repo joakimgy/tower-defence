@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
-import ecs.component.EnemyComponent
+import ecs.component.HealthComponent
 import ecs.component.RenderComponent
 import ecs.component.TransformComponent
 import ktx.ashley.allOf
@@ -52,14 +52,14 @@ class RenderSystem(
                 batch.draw(render.sprite, transform.bounds.x, transform.bounds.y, TILE_SIZE, TILE_SIZE)
             }
             // Render health bar for enemies
-            entity[EnemyComponent.mapper]?.let { enemy ->
-                renderHealthBar(enemy, transform)
+            entity[HealthComponent.mapper]?.let { health ->
+                renderHealthBar(health, transform)
             }
         }
     }
 
-    private fun renderHealthBar(enemy: EnemyComponent, transform: TransformComponent) {
-        val healthPercentage = (enemy.health / enemy.maxHealth)
+    private fun renderHealthBar(health: HealthComponent, transform: TransformComponent) {
+        val healthPercentage = (health.health / health.maxHealth)
         batch.draw(
             greenHealthBar,
             transform.bounds.x,

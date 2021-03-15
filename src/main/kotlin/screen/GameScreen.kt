@@ -30,6 +30,7 @@ class GameScreen(
             addSystem(AttackSystem(assets))
             addSystem(ProjectileSystem())
             addSystem(PathfindingSystem())
+            addSystem(HealthSystem())
         }
 
     }

@@ -3,13 +3,13 @@ package ecs.component
 import com.badlogic.ashley.core.Component
 import ktx.ashley.mapperFor
 
-class PlayerComponent : Component {
+class HealthComponent : Component {
 
-    val maxHealth = 100f
+    val maxHealth = 130f
     var health = maxHealth
 
     companion object {
-        val mapper = mapperFor<PlayerComponent>()
+        val mapper = mapperFor<HealthComponent>()
     }
 
 }

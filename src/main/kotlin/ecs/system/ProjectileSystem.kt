@@ -3,7 +3,7 @@ package ecs.system
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.math.Rectangle
-import ecs.component.EnemyComponent
+import ecs.component.HealthComponent
 import ecs.component.MoveComponent
 import ecs.component.ProjectileComponent
 import ecs.component.TransformComponent
@@ -21,10 +21,10 @@ class ProjectileSystem() : IteratingSystem(
         entity[ProjectileComponent.mapper]?.let { projectile ->
             entity[TransformComponent.mapper]?.let { transform ->
                 entity[MoveComponent.mapper]?.let { move ->
-                    val enemyCmp = projectile.enemyEntity[EnemyComponent.mapper]
+                    val enemyHealthCmp = projectile.enemyEntity[HealthComponent.mapper]
                     val enemyTransformCmp = projectile.enemyEntity[TransformComponent.mapper]
                     // Check that enemy is still alive
-                    if (enemyCmp == null || enemyTransformCmp == null) {
+                    if (enemyHealthCmp == null || enemyTransformCmp == null) {
                         engine.removeEntity(entity)
                         return
                     }
@@ -41,10 +41,7 @@ class ProjectileSystem() : IteratingSystem(
                     // Handle hit
                     val hitbox = Rectangle(enemyPos.getCenterXY().x - 5f, enemyPos.getCenterXY().y - 5f, 10f, 10f)
                     if (hitbox.contains(projectilePos.getCenterXY().x, projectilePos.getCenterXY().y)) {
-                        enemyCmp.health -= projectile.damage
-                        if (enemyCmp.health <= 0f) {
-                            engine.removeEntity(projectile.enemyEntity)
-                        }
+                        enemyHealthCmp.health -= projectile.damage
                         engine.removeEntity(entity)
                     }
                 }
