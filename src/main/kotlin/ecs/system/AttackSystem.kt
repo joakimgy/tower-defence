@@ -7,10 +7,10 @@ import com.badlogic.gdx.math.Circle
 import ecs.component.EnemyComponent
 import ecs.component.TowerComponent
 import ecs.component.TransformComponent
-import ecs.component.getCenterXY
 import ktx.ashley.allOf
 import ktx.ashley.contains
 import ktx.ashley.get
+import utils.getCenterXY
 
 
 class AttackSystem(

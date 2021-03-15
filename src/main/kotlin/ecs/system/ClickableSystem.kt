@@ -14,10 +14,10 @@ import com.badlogic.gdx.math.Vector3
 import ecs.component.ClickableComponent
 import ecs.component.TowerComponent
 import ecs.component.TransformComponent
-import ecs.component.getCenterXY
 import ktx.ashley.allOf
 import ktx.ashley.get
 import ktx.graphics.use
+import utils.getCenterXY
 
 
 class ClickableSystem(
