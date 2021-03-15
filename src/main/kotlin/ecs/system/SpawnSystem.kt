@@ -68,8 +68,8 @@ class SpawnSystem(assets: AssetManager) : IntervalSystem(3f) {
                 sprite.setRegion(enemyRegion)
             }
             with<MoveComponent> {
-                speed.x = 40f
-                speed.y = 40f
+                speed.x = 10f
+                speed.y = 10f
             }
             with<TransformComponent> { bounds.set(TILE_SIZE, TILE_SIZE, TILE_SIZE, TILE_SIZE) }
         }

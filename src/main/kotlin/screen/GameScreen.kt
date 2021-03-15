@@ -29,6 +29,7 @@ class GameScreen(
             addSystem(ClickableSystem(batch, camera, assets))
             addSystem(AttackSystem(assets))
             addSystem(ProjectileSystem())
+            addSystem(PathfindingSystem())
         }
 
     }
