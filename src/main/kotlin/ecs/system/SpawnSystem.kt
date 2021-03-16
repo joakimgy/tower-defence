@@ -16,7 +16,7 @@ import ecs.component.*
 import ktx.ashley.entity
 import ktx.ashley.get
 import ktx.ashley.with
-import screen.GameState
+import utils.GameState
 import utils.adjacentCoordinates
 import utils.toCoordinate
 import utils.toVector
@@ -33,12 +33,11 @@ class SpawnSystem(private val gameState: GameState, assets: AssetManager) : Inte
     override fun addedToEngine(engine: Engine?) {
         super.addedToEngine(engine)
         spawnMap()
-        //spawnMaze()
         spawnPlayer()
     }
 
+
     override fun updateInterval() {
-        println("State $gameState")
         if (!gameState.isBuilding) {
             if (gameState.enemiesToSpawn > 0) {
                 spawnEnemy(gameState.round)
@@ -86,6 +85,7 @@ class SpawnSystem(private val gameState: GameState, assets: AssetManager) : Inte
             }
         }
     }
+
 
     private fun spawnEnemy(round: Int) {
         val towers = engine.getEntitiesFor(

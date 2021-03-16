@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
+import com.badlogic.gdx.graphics.g2d.BitmapFont
 import ecs.component.HealthComponent
 import ecs.component.RenderComponent
 import ecs.component.TransformComponent
@@ -18,9 +19,10 @@ import ktx.graphics.use
 
 class RenderSystem(
     private val batch: Batch,
+    private val font: BitmapFont,
     private val camera: OrthographicCamera
 ) : SortedIteratingSystem(
-    allOf(TransformComponent::class, RenderComponent::class).get(),
+    allOf(RenderComponent::class, TransformComponent::class).get(),
     // compareBy is used to render entities by their z-index (=player is drawn in the background; raindrops are drawn in the foreground)
     compareBy { entity: Entity -> entity[RenderComponent.mapper]?.z }
 ) {

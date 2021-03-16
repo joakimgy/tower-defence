@@ -96,3 +96,10 @@ abstract class AlgorithmAStar<V : Graph.Vertex, E : Graph.Edge<V>>(
         throw IllegalArgumentException("No Path from Start $begin to Finish $end")
     }
 }
+
+data class GameState(
+    var round: Int,
+    var enemiesToSpawn: Int,
+    var isBuilding: Boolean,
+    var blocksRemaining: Int,
+)

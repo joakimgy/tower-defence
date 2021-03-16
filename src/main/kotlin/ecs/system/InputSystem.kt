@@ -20,7 +20,7 @@ import ktx.ashley.allOf
 import ktx.ashley.entity
 import ktx.ashley.get
 import ktx.ashley.with
-import screen.GameState
+import utils.GameState
 import utils.getCenterXY
 import utils.toCoordinate
 

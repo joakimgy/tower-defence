@@ -31,7 +31,7 @@ class Game : KtxGame<KtxScreen>() {
             bindSingleton(PooledEngine())
 
             addScreen(LoadingScreen(this@Game, inject(), inject(), inject(), inject()))
-            addScreen(GameScreen(this@Game, inject(), inject(), inject(), inject()))
+            addScreen(GameScreen(this@Game, inject(), inject(), inject(), inject(), inject()))
             addScreen(GameOverScreen(inject(), inject(), inject(), inject()))
 
 
