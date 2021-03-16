@@ -1,8 +1,6 @@
 package screen
 
 import Game
-import assets.MusicAssets
-import assets.get
 import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.OrthographicCamera
@@ -30,9 +28,6 @@ class GameScreen(
     )
 
     override fun show() {
-        // start the playback of the background music when the screen is shown
-        assets[MusicAssets.Hype].apply { isLooping = true; volume = 0.00f }.play()
-
         // initialize entity engine
         engine.apply {
             addSystem(MoveSystem())
