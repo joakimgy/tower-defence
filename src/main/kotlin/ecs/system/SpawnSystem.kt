@@ -64,6 +64,7 @@ class SpawnSystem(private val gameState: GameState, assets: AssetManager) : Inte
                     with<RenderComponent> {
                         sprite.setRegion(tileDirtRegion)
                     }
+                    with<ClickableComponent>()
                 }
             }
         }
@@ -137,7 +138,6 @@ class SpawnSystem(private val gameState: GameState, assets: AssetManager) : Inte
             engine.entity {
                 engine.entity {
                     with<TransformComponent> { bounds.set(it.toVector().x, it.toVector().y, TILE_SIZE, TILE_SIZE) }
-                    with<ClickableComponent>()
                     with<RenderComponent> {
                         sprite.setRegion(buildingBlockRegion)
                     }

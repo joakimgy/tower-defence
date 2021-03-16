@@ -15,6 +15,7 @@ import ecs.component.ClickableComponent
 import ecs.component.TransformComponent
 import ecs.component.buildings.AttackTowerComponent
 import ecs.component.buildings.BuildingBlockComponent
+import ecs.component.buildings.Tower
 import ktx.ashley.allOf
 import ktx.ashley.get
 import ktx.graphics.use
@@ -29,22 +30,24 @@ class ClickableSystem(
     allOf(ClickableComponent::class).get(),
 ) {
     private val circleRegion = assets[TextureAtlasAssets.TowerDefence].findRegion("circle")
+    private val turretRegion = assets[TextureAtlasAssets.TowerDefence].findRegion("turret")
 
     override fun processEntity(entity: Entity, deltaTime: Float) {
         entity[TransformComponent.mapper]?.let { transform ->
-            entity[AttackTowerComponent.mapper]?.let { attackTower ->
-                if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
-                    val clickPosition = Vector3(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f)
-                    camera.unproject(clickPosition)
-                    if (transform.bounds.contains(clickPosition.x, clickPosition.y)) {
-                        batch.use {
-                            drawTransparentCircle(transform, attackTower.range)
-                        }
+            if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
+                val clickPosition = Vector3(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f)
+                camera.unproject(clickPosition)
+                if (!transform.bounds.contains(clickPosition.x, clickPosition.y)) {
+                    return
+                }
+                batch.use {
+                    entity[AttackTowerComponent.mapper]?.let { attackTower ->
+                        drawTransparentCircle(transform, attackTower.range)
+                    }
+                    entity[BuildingBlockComponent.mapper]?.let { buildingBlock ->
+                        buildingBlock.upgradeTo(Tower.ATTACK_TOWER, engine, entity, turretRegion)
                     }
                 }
-            }
-            entity[BuildingBlockComponent.mapper]?.let {
-                // Handle click on building blocks
             }
         }
     }
