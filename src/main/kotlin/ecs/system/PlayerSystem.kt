@@ -15,6 +15,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
+import ecs.component.EnemyComponent
 import ecs.component.PlayerComponent
 import ecs.component.RenderComponent
 import ecs.component.TransformComponent
@@ -93,6 +94,8 @@ class PlayerSystem(
             )
         val existingTowerPositions =
             towerComponents.mapNotNull { it[TransformComponent.mapper]?.bounds }
+        val enemies = engine.getEntitiesFor(Family.one(EnemyComponent::class.java).get())
+
         val mapBounds = Rectangle(
             TILE_SIZE,
             TILE_SIZE,
@@ -100,8 +103,9 @@ class PlayerSystem(
             MAP_SIZE_Y * TILE_SIZE
         )
 
+        val enemiesAreAlive = enemies.firstOrNull() != null
         val isOccupied = existingTowerPositions.contains(position)
         val isOutOfBounds = !mapBounds.contains(position.getCenterXY())
-        return !isOccupied && !isOutOfBounds && gameState.isBuilding
+        return !enemiesAreAlive && !isOccupied && !isOutOfBounds && gameState.isBuilding
     }
 }
