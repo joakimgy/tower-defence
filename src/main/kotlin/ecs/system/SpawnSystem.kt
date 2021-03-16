@@ -20,13 +20,19 @@ import utils.adjacentCoordinates
 import utils.toCoordinate
 import utils.toVector
 
+data class GameState(
+    var round: Int = 0,
+    var enemiesToSpawn: Int = 5,
+)
 
-class SpawnSystem(assets: AssetManager) : IntervalSystem(3f) {
+class SpawnSystem(assets: AssetManager) : IntervalSystem(1f) {
     private val enemyRegion = assets[TextureAtlasAssets.TowerDefence].findRegion("enemy")
     private val tileDirtRegion = assets[TextureAtlasAssets.TowerDefence].findRegion("tileDirt")
     private val playerRegion = assets[TextureAtlasAssets.BlackSmith].findRegion("dude")
     private val destinationRegion = assets[TextureAtlasAssets.TowerDefence].findRegion("star")
     private val buildingBlockRegion = assets[TextureAtlasAssets.TowerDefence].findRegion("buildingBlock")
+
+    private val gameState = GameState()
 
     override fun addedToEngine(engine: Engine?) {
         super.addedToEngine(engine)
@@ -36,7 +42,15 @@ class SpawnSystem(assets: AssetManager) : IntervalSystem(3f) {
     }
 
     override fun updateInterval() {
-        spawnEnemy()
+        println("State $gameState")
+        if (gameState.enemiesToSpawn > 0) {
+            spawnEnemy()
+            gameState.enemiesToSpawn -= 1
+        } else {
+            gameState.round += 1
+            gameState.enemiesToSpawn = 5
+        }
+
     }
 
     /*
