@@ -1,7 +1,6 @@
 package screen
 
 import Game
-import assets.MusicAssets
 import assets.TextureAtlasAssets
 import assets.load
 import com.badlogic.gdx.Gdx
@@ -21,8 +20,6 @@ class LoadingScreen(
 ) : KtxScreen {
 
     override fun show() {
-        MusicAssets.values().forEach { assets.load(it) }
-        // SoundAssets.values().forEach { assets.load(it) }
         TextureAtlasAssets.values().forEach { assets.load(it) }
     }
 
