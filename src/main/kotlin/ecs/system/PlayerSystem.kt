@@ -83,10 +83,6 @@ class PlayerSystem(
                 Tower.BUILDING_BLOCK -> buildBuildingBlock(engine, towerBounds, buildingBlockRegion)
             }
             gameState.blocksRemaining -= 1
-            if (gameState.blocksRemaining == 0) {
-                gameState.isBuilding = false
-                gameState.blocksRemaining = 5
-            }
         }
     }
 
@@ -105,7 +101,7 @@ class PlayerSystem(
         )
 
         val isOccupied = existingTowerPositions.contains(position)
-        val isOutOfBounds = !mapBounds.contains(position)
+        val isOutOfBounds = !mapBounds.contains(position.getCenterXY())
         return !isOccupied && !isOutOfBounds && gameState.isBuilding
     }
 }

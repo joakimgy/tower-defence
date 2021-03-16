@@ -44,10 +44,6 @@ class SpawnSystem(private val gameState: GameState, assets: AssetManager) : Inte
             if (gameState.enemiesToSpawn > 0) {
                 spawnEnemy(gameState.round)
                 gameState.enemiesToSpawn -= 1
-            } else {
-                gameState.round += 1
-                gameState.enemiesToSpawn = 5
-                gameState.isBuilding = true
             }
         }
     }

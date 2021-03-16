@@ -48,7 +48,23 @@ class GameScreen(
 
     override fun render(delta: Float) {
         // everything is now done withing our entity engine --> update it every frame
+        logic()
         engine.update(delta)
+    }
+
+    private fun logic() {
+        if (gameState.isBuilding) {
+            if (gameState.blocksRemaining == 0) {
+                gameState.isBuilding = false
+                gameState.enemiesToSpawn = 5
+                gameState.round += 1
+            }
+        } else {
+            if (gameState.enemiesToSpawn == 0) {
+                gameState.isBuilding = true
+                gameState.blocksRemaining = 5
+            }
+        }
     }
 
 }
