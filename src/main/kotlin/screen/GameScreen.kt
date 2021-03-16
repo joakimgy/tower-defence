@@ -19,7 +19,7 @@ class GameScreen(
     private val engine: PooledEngine
 ) : KtxScreen {
     private val gameState = GameState(
-        round = 0,
+        round = 1,
         enemiesToSpawn = 5,
         isBuilding = true,
         blocksRemaining = 5

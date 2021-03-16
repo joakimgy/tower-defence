@@ -33,7 +33,7 @@ class SpawnSystem(private val gameState: GameState, assets: AssetManager) : Inte
     override fun addedToEngine(engine: Engine?) {
         super.addedToEngine(engine)
         spawnMap()
-        spawnMaze()
+        //spawnMaze()
         spawnPlayer()
     }
 
@@ -41,7 +41,7 @@ class SpawnSystem(private val gameState: GameState, assets: AssetManager) : Inte
         println("State $gameState")
         if (!gameState.isBuilding) {
             if (gameState.enemiesToSpawn > 0) {
-                spawnEnemy()
+                spawnEnemy(gameState.round)
                 gameState.enemiesToSpawn -= 1
             } else {
                 gameState.round += 1
@@ -87,7 +87,7 @@ class SpawnSystem(private val gameState: GameState, assets: AssetManager) : Inte
         }
     }
 
-    private fun spawnEnemy() {
+    private fun spawnEnemy(round: Int) {
         val towers = engine.getEntitiesFor(
             Family.one(BuildingBlockComponent::class.java, AttackTowerComponent::class.java).get()
         )
@@ -106,7 +106,7 @@ class SpawnSystem(private val gameState: GameState, assets: AssetManager) : Inte
                 this.path = path.toMutableList()
             }
             with<HealthComponent> {
-                health = maxHealth
+                health = maxHealth.times(round)
             }
             with<RenderComponent> {
                 z = 1

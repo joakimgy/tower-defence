@@ -130,6 +130,7 @@ class InputSystem(
         gameState.blocksRemaining -= 1
         if (gameState.blocksRemaining == 0) {
             gameState.isBuilding = false
+            gameState.blocksRemaining = 5
         }
     }
 }
