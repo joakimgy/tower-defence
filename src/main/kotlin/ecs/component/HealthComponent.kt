@@ -5,7 +5,7 @@ import ktx.ashley.mapperFor
 
 class HealthComponent : Component {
 
-    val maxHealth = 130f
+    var maxHealth = 130f
     var health = maxHealth
 
     companion object {

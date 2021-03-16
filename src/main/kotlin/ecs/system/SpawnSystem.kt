@@ -106,7 +106,8 @@ class SpawnSystem(private val gameState: GameState, assets: AssetManager) : Inte
                 this.path = path.toMutableList()
             }
             with<HealthComponent> {
-                health = maxHealth.times(round)
+                health = 100f * round
+                maxHealth = 100f * round
             }
             with<RenderComponent> {
                 z = 1
