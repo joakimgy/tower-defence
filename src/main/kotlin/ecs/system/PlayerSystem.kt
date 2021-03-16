@@ -15,7 +15,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
-import ecs.component.*
+import ecs.component.ClickableComponent
+import ecs.component.PlayerComponent
+import ecs.component.RenderComponent
+import ecs.component.TransformComponent
 import ecs.component.buildings.AttackTowerComponent
 import ecs.component.buildings.BuildingBlockComponent
 import ecs.component.buildings.Towers
@@ -48,35 +51,23 @@ class PlayerSystem(
             towerComponents.mapNotNull { it[TransformComponent.mapper]?.bounds }
 
         entity[TransformComponent.mapper]?.let { transform ->
-            entity[MoveComponent.mapper]?.let { move ->
-                when {
-                    Gdx.input.isKeyPressed(Input.Keys.A) -> move.speed.x = -200f
-                    Gdx.input.isKeyPressed(Input.Keys.D) -> move.speed.x = 200f
-                    else -> move.speed.x = 0f
-                }
-                when {
-                    Gdx.input.isKeyPressed(Input.Keys.W) -> move.speed.y = 200f
-                    Gdx.input.isKeyPressed(Input.Keys.S) -> move.speed.y = -200f
-                    else -> move.speed.y = 0f
-                }
-                if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
-                    touchPos.set(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f)
-                    camera.unproject(touchPos)
-                    buildTower(Vector2(touchPos.x, touchPos.y), existingTowerBounds, Towers.ATTACK_TOWER, gameState)
-                }
-                if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-                    touchPos.set(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f)
-                    camera.unproject(touchPos)
-                }
-                if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-                    buildTower(
-                        Vector2(transform.bounds.getCenterXY().x, transform.bounds.getCenterXY().y),
-                        existingTowerBounds,
-                        Towers.BUILDING_BLOCK,
-                        gameState
-                    )
+            if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
+                touchPos.set(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f)
+                camera.unproject(touchPos)
+                buildTower(Vector2(touchPos.x, touchPos.y), existingTowerBounds, Towers.ATTACK_TOWER, gameState)
+            }
+            if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+                touchPos.set(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f)
+                camera.unproject(touchPos)
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+                buildTower(
+                    Vector2(transform.bounds.getCenterXY().x, transform.bounds.getCenterXY().y),
+                    existingTowerBounds,
+                    Towers.BUILDING_BLOCK,
+                    gameState
+                )
 
-                }
             }
         }
     }
