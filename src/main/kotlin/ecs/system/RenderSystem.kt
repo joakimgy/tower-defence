@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont
 import ecs.component.HealthComponent
 import ecs.component.RenderComponent
 import ecs.component.TransformComponent
+import ecs.component.buildings.BuildingInfoComponent
 import ktx.ashley.allOf
 import ktx.ashley.get
 import ktx.graphics.use
@@ -29,10 +30,12 @@ class RenderSystem(
     compareBy { entity: Entity -> entity[RenderComponent.mapper]?.z }
 ) {
 
-    private val greenHealthBar =
+    private val greenHealthBarTexture =
         createTexture(1, 1, Color.GREEN.apply { a = 0.5f })
-    private val redHealthBar =
+    private val redHealthBarTexture =
         createTexture(1, 1, Color.RED.apply { a = 0.5f })
+    private val infoBoxTexture = createTexture(1, 1, Color.DARK_GRAY.apply { a = 0.5f })
+
     private val healthBarWidth = TILE_SIZE
     private val healthBarHeight = 4f
 
@@ -54,26 +57,48 @@ class RenderSystem(
         entity[TransformComponent.mapper]?.let { transform ->
             // Render all sprites
             entity[RenderComponent.mapper]?.let { render ->
-                batch.draw(render.sprite, transform.bounds.x, transform.bounds.y, TILE_SIZE, TILE_SIZE)
+                if (render.sprite.texture != null) {
+                    batch.draw(render.sprite, transform.bounds.x, transform.bounds.y, TILE_SIZE, TILE_SIZE)
+                }
             }
             // Render health bar for enemies
             entity[HealthComponent.mapper]?.let { health ->
                 renderHealthBar(health, transform)
             }
+            // Render building information
+            entity[BuildingInfoComponent.mapper]?.let { info ->
+                renderBuildingInfo(info, transform)
+            }
         }
+    }
+
+    private fun renderBuildingInfo(info: BuildingInfoComponent, transform: TransformComponent) {
+        batch.draw(
+            infoBoxTexture,
+            transform.bounds.x,
+            transform.bounds.y,
+            transform.bounds.width,
+            transform.bounds.height
+        )
+        font.draw(
+            batch,
+            "${info.upgrades}",
+            transform.bounds.x + TILE_SIZE / 2f,
+            transform.bounds.y + transform.bounds.height - TILE_SIZE / 2f
+        )
     }
 
     private fun renderHealthBar(health: HealthComponent, transform: TransformComponent) {
         val healthPercentage = (health.health / health.maxHealth)
         batch.draw(
-            greenHealthBar,
+            greenHealthBarTexture,
             transform.bounds.x,
             transform.bounds.y + TILE_SIZE,
             healthBarWidth * healthPercentage,
             healthBarHeight
         )
         batch.draw(
-            redHealthBar,
+            redHealthBarTexture,
             transform.bounds.x + healthBarWidth * healthPercentage,
             transform.bounds.y + TILE_SIZE,
             healthBarWidth * (1 - healthPercentage),

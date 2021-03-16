@@ -1,5 +1,6 @@
 package ecs.system
 
+import TILE_SIZE
 import assets.TextureAtlasAssets
 import assets.get
 import com.badlogic.ashley.core.Entity
@@ -10,14 +11,18 @@ import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.Batch
+import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector3
 import ecs.component.ClickableComponent
+import ecs.component.RenderComponent
 import ecs.component.TransformComponent
 import ecs.component.buildings.AttackTowerComponent
 import ecs.component.buildings.BuildingBlockComponent
-import ecs.component.buildings.Tower
+import ecs.component.buildings.BuildingInfoComponent
 import ktx.ashley.allOf
+import ktx.ashley.entity
 import ktx.ashley.get
+import ktx.ashley.with
 import ktx.graphics.use
 import utils.getCenterXY
 
@@ -30,7 +35,6 @@ class ClickableSystem(
     allOf(ClickableComponent::class).get(),
 ) {
     private val circleRegion = assets[TextureAtlasAssets.TowerDefence].findRegion("circle")
-    private val turretRegion = assets[TextureAtlasAssets.TowerDefence].findRegion("turret")
 
     override fun processEntity(entity: Entity, deltaTime: Float) {
         entity[TransformComponent.mapper]?.let { transform ->
@@ -44,8 +48,27 @@ class ClickableSystem(
                     entity[AttackTowerComponent.mapper]?.let { attackTower ->
                         drawTransparentCircle(transform, attackTower.range)
                     }
-                    entity[BuildingBlockComponent.mapper]?.let { buildingBlock ->
-                        buildingBlock.upgradeTo(Tower.ATTACK_TOWER, engine, entity, turretRegion)
+                    entity[BuildingBlockComponent.mapper]?.let {
+                        engine.entity {
+                            with<BuildingInfoComponent> {
+                                this.entity = entity
+                            }
+                            with<ClickableComponent>()
+                            with<RenderComponent>()
+                            with<TransformComponent> {
+                                bounds.set(
+                                    Rectangle(
+                                        transform.bounds.x - TILE_SIZE * 2,
+                                        transform.bounds.y + TILE_SIZE,
+                                        TILE_SIZE * 5,
+                                        TILE_SIZE * 2
+                                    )
+                                )
+                            }
+                        }
+                    }
+                    entity[BuildingInfoComponent.mapper]?.let {
+                        engine.removeEntity(entity)
                     }
                 }
             }
