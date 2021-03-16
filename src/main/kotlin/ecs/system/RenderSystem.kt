@@ -15,12 +15,14 @@ import ecs.component.TransformComponent
 import ktx.ashley.allOf
 import ktx.ashley.get
 import ktx.graphics.use
+import utils.GameState
 
 
 class RenderSystem(
     private val batch: Batch,
     private val font: BitmapFont,
-    private val camera: OrthographicCamera
+    private val camera: OrthographicCamera,
+    private val gameState: GameState
 ) : SortedIteratingSystem(
     allOf(RenderComponent::class, TransformComponent::class).get(),
     // compareBy is used to render entities by their z-index (=player is drawn in the background; raindrops are drawn in the foreground)
@@ -43,6 +45,7 @@ class RenderSystem(
         // draw all entities in one batch
 
         batch.use {
+            renderGameInterface()
             super.update(deltaTime)
         }
     }
@@ -76,6 +79,13 @@ class RenderSystem(
             healthBarWidth * (1 - healthPercentage),
             healthBarHeight
         )
+    }
+
+    private fun renderGameInterface() {
+        font.draw(batch, "Round: ${gameState.round}", 200f, 32f * 15f - 16f)
+        if (gameState.isBuilding) {
+            font.draw(batch, "Blocks remaining: ${gameState.blocksRemaining}", 300f, 32f * 15f - 16f)
+        }
     }
 
     /**

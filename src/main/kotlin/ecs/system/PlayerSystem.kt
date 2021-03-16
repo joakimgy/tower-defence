@@ -25,7 +25,6 @@ import ktx.ashley.get
 import ktx.ashley.with
 import utils.GameState
 import utils.getCenterXY
-import utils.toCoordinate
 
 class PlayerSystem(
     private val camera: OrthographicCamera,
@@ -68,7 +67,6 @@ class PlayerSystem(
                 if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
                     touchPos.set(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f)
                     camera.unproject(touchPos)
-                    println("Touched ${touchPos.toCoordinate()}")
                 }
                 if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
                     buildTower(

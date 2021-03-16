@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import ecs.system.*
 import ktx.app.KtxScreen
-import ktx.graphics.use
 import utils.GameState
 
 
@@ -31,14 +30,14 @@ class GameScreen(
         // initialize entity engine
         engine.apply {
             addSystem(MoveSystem())
-            addSystem(RenderSystem(batch, font, camera))
+            addSystem(RenderSystem(batch, font, camera, gameState))
             addSystem(PlayerSystem(camera, assets, gameState))
             addSystem(SpawnSystem(gameState, assets))
             addSystem(ClickableSystem(batch, camera, assets))
             addSystem(AttackTowerSystem(assets))
             addSystem(ProjectileSystem())
             addSystem(EnemySystem())
-            addSystem(HealthSystem(gameOver = {
+            addSystem(HealthSystem(onGameOver = {
                 game.removeScreen<GameScreen>()
                 dispose()
                 game.setScreen<GameOverScreen>()
@@ -50,13 +49,6 @@ class GameScreen(
     override fun render(delta: Float) {
         // everything is now done withing our entity engine --> update it every frame
         engine.update(delta)
-        // Show interface
-        batch.use {
-            font.draw(batch, "Round: ${gameState.round}", 200f, 32f * 15f - 16f)
-            if (gameState.isBuilding) {
-                font.draw(batch, "Blocks remaining: ${gameState.blocksRemaining}", 300f, 32f * 15f - 16f)
-            }
-        }
     }
 
 }

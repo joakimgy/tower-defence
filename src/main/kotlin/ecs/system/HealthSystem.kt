@@ -7,12 +7,12 @@ import ecs.component.PlayerComponent
 import ktx.ashley.allOf
 import ktx.ashley.get
 
-class HealthSystem(private val gameOver: () -> Unit) : IteratingSystem(allOf(HealthComponent::class).get()) {
+class HealthSystem(private val onGameOver: () -> Unit) : IteratingSystem(allOf(HealthComponent::class).get()) {
     override fun processEntity(entity: Entity, deltaTime: Float) {
         entity[HealthComponent.mapper]?.let { healthCmp ->
             entity[PlayerComponent.mapper]?.let {
                 if (healthCmp.health <= 0f) {
-                    gameOver()
+                    onGameOver()
                 }
             }
             if (healthCmp.health <= 0f) {

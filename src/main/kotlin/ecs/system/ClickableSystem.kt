@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.Vector3
 import ecs.component.ClickableComponent
 import ecs.component.TransformComponent
 import ecs.component.buildings.AttackTowerComponent
+import ecs.component.buildings.BuildingBlockComponent
 import ktx.ashley.allOf
 import ktx.ashley.get
 import ktx.graphics.use
@@ -25,7 +26,7 @@ class ClickableSystem(
     private val camera: OrthographicCamera,
     assets: AssetManager
 ) : IteratingSystem(
-    allOf(ClickableComponent::class, TransformComponent::class, AttackTowerComponent::class).get(),
+    allOf(ClickableComponent::class).get(),
 ) {
     private val circleRegion = assets[TextureAtlasAssets.TowerDefence].findRegion("circle")
 
@@ -41,6 +42,9 @@ class ClickableSystem(
                         }
                     }
                 }
+            }
+            entity[BuildingBlockComponent.mapper]?.let {
+                // Handle click on building blocks
             }
         }
     }
