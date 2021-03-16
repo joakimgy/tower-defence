@@ -39,15 +39,16 @@ class SpawnSystem(private val gameState: GameState, assets: AssetManager) : Inte
 
     override fun updateInterval() {
         println("State $gameState")
-
-        if (gameState.enemiesToSpawn > 0) {
-            spawnEnemy()
-            gameState.enemiesToSpawn -= 1
-        } else {
-            gameState.round += 1
-            gameState.enemiesToSpawn = 5
+        if (!gameState.isBuilding) {
+            if (gameState.enemiesToSpawn > 0) {
+                spawnEnemy()
+                gameState.enemiesToSpawn -= 1
+            } else {
+                gameState.round += 1
+                gameState.enemiesToSpawn = 5
+                gameState.isBuilding = true
+            }
         }
-
     }
 
     /*

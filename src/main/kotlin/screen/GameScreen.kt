@@ -33,7 +33,7 @@ class GameScreen(
         engine.apply {
             addSystem(MoveSystem())
             addSystem(RenderSystem(batch, camera))
-            addSystem(InputSystem(camera, assets))
+            addSystem(InputSystem(camera, assets, gameState))
             addSystem(SpawnSystem(gameState, assets))
             addSystem(ClickableSystem(batch, camera, assets))
             addSystem(AttackSystem(assets))

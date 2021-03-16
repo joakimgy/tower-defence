@@ -20,12 +20,14 @@ import ktx.ashley.allOf
 import ktx.ashley.entity
 import ktx.ashley.get
 import ktx.ashley.with
+import screen.GameState
 import utils.getCenterXY
 import utils.toCoordinate
 
 class InputSystem(
     private val camera: OrthographicCamera,
     assets: AssetManager,
+    private val gameState: GameState,
 
     ) : IteratingSystem(
     allOf(PlayerComponent::class, TransformComponent::class, RenderComponent::class).get(),
@@ -58,7 +60,7 @@ class InputSystem(
                 if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
                     touchPos.set(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f)
                     camera.unproject(touchPos)
-                    buildTower(Vector2(touchPos.x, touchPos.y), existingTowerBounds, AttackTowerComponent())
+                    buildTower(Vector2(touchPos.x, touchPos.y), existingTowerBounds, AttackTowerComponent(), gameState)
                 }
                 if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
                     touchPos.set(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f)
@@ -69,14 +71,21 @@ class InputSystem(
                     buildTower(
                         Vector2(transform.bounds.getCenterXY().x, transform.bounds.getCenterXY().y),
                         existingTowerBounds,
-                        BuildingBlockComponent()
+                        BuildingBlockComponent(),
+                        gameState
                     )
+
                 }
             }
         }
     }
 
-    private fun buildTower(position: Vector2, existingTowerBounds: List<Rectangle>, tower: TowerComponent) {
+    private fun buildTower(
+        position: Vector2,
+        existingTowerBounds: List<Rectangle>,
+        tower: TowerComponent,
+        gameState: GameState
+    ) {
         val towerBounds = Rectangle(
             position.x - position.x.rem(TILE_SIZE),
             position.y - position.y.rem(TILE_SIZE),
@@ -89,28 +98,38 @@ class InputSystem(
             MAP_SIZE_X * TILE_SIZE,
             MAP_SIZE_Y * TILE_SIZE
         )
-        if (!existingTowerBounds.contains(towerBounds) and mapBounds.contains(towerBounds.getCenterXY())) {
+        // Check that tile is inside map, doesn't have a tower on it, and that game state allows building
+        if (existingTowerBounds.contains(towerBounds)
+            || !mapBounds.contains(towerBounds.getCenterXY())
+            || !gameState.isBuilding
+        ) {
+            return
+        }
 
-            engine.entity {
-                with<TransformComponent> {
-                    bounds.set(towerBounds)
+        engine.entity {
+            with<TransformComponent> {
+                bounds.set(towerBounds)
+            }
+            with<ClickableComponent>()
+            when (tower) {
+                is AttackTowerComponent -> {
+                    with<RenderComponent> {
+                        sprite.setRegion(turretRegion)
+                    }
+                    with<AttackTowerComponent>()
                 }
-                with<ClickableComponent>()
-                when (tower) {
-                    is AttackTowerComponent -> {
-                        with<RenderComponent> {
-                            sprite.setRegion(turretRegion)
-                        }
-                        with<AttackTowerComponent>()
+                is BuildingBlockComponent -> {
+                    with<RenderComponent> {
+                        sprite.setRegion(buildingBlockRegion)
                     }
-                    is BuildingBlockComponent -> {
-                        with<RenderComponent> {
-                            sprite.setRegion(buildingBlockRegion)
-                        }
-                        with<BuildingBlockComponent>()
-                    }
+                    with<BuildingBlockComponent>()
                 }
             }
+        }
+
+        gameState.blocksRemaining -= 1
+        if (gameState.blocksRemaining == 0) {
+            gameState.isBuilding = false
         }
     }
 }
