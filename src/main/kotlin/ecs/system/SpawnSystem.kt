@@ -13,6 +13,8 @@ import com.badlogic.ashley.core.Family
 import com.badlogic.ashley.systems.IntervalSystem
 import com.badlogic.gdx.assets.AssetManager
 import ecs.component.*
+import ecs.component.buildings.AttackTowerComponent
+import ecs.component.buildings.BuildingBlockComponent
 import ktx.ashley.entity
 import ktx.ashley.get
 import ktx.ashley.with

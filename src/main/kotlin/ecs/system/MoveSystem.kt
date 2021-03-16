@@ -9,10 +9,10 @@ import ecs.component.TransformComponent
 import ktx.ashley.allOf
 import ktx.ashley.get
 
-class MoveSystem : IteratingSystem(allOf(TransformComponent::class, MoveComponent::class).get()) {
+class MoveSystem : IteratingSystem(allOf(MoveComponent::class, TransformComponent::class).get()) {
     override fun processEntity(entity: Entity, deltaTime: Float) {
-        entity[TransformComponent.mapper]?.let { transform ->
-            entity[MoveComponent.mapper]?.let { move ->
+        entity[MoveComponent.mapper]?.let { move ->
+            entity[TransformComponent.mapper]?.let { transform ->
                 // make sure the entities stay within the screen bounds
                 transform.bounds.x =
                     MathUtils.clamp(transform.bounds.x + move.speed.x * deltaTime, TILE_SIZE, 800f - TILE_SIZE * 2)

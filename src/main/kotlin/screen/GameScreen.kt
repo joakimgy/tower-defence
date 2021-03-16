@@ -37,12 +37,12 @@ class GameScreen(
         engine.apply {
             addSystem(MoveSystem())
             addSystem(RenderSystem(batch, font, camera))
-            addSystem(InputSystem(camera, assets, gameState))
+            addSystem(PlayerSystem(camera, assets, gameState))
             addSystem(SpawnSystem(gameState, assets))
             addSystem(ClickableSystem(batch, camera, assets))
-            addSystem(AttackSystem(assets))
+            addSystem(AttackTowerSystem(assets))
             addSystem(ProjectileSystem())
-            addSystem(PathfindingSystem())
+            addSystem(EnemySystem())
             addSystem(HealthSystem(gameOver = {
                 game.removeScreen<GameScreen>()
                 dispose()

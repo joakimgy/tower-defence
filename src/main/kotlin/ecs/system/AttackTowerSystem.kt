@@ -9,6 +9,7 @@ import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.math.Circle
 import com.badlogic.gdx.math.Vector2
 import ecs.component.*
+import ecs.component.buildings.AttackTowerComponent
 import ktx.ashley.allOf
 import ktx.ashley.entity
 import ktx.ashley.get
@@ -16,7 +17,7 @@ import ktx.ashley.with
 import utils.getCenterXY
 
 
-class AttackSystem(
+class AttackTowerSystem(
     assets: AssetManager
 ) : IntervalIteratingSystem(
     allOf(AttackTowerComponent::class, TransformComponent::class).get(), 0.5f

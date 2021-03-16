@@ -9,9 +9,8 @@ import ktx.ashley.allOf
 import ktx.ashley.get
 import utils.toVector
 
-class PathfindingSystem :
+class EnemySystem :
     IteratingSystem(allOf(EnemyComponent::class, TransformComponent::class, MoveComponent::class).get()) {
-
 
     override fun processEntity(entity: Entity, deltaTime: Float) {
         entity[EnemyComponent.mapper]?.let { enemy ->

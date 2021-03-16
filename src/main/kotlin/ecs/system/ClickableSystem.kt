@@ -11,9 +11,9 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Vector3
-import ecs.component.AttackTowerComponent
 import ecs.component.ClickableComponent
 import ecs.component.TransformComponent
+import ecs.component.buildings.AttackTowerComponent
 import ktx.ashley.allOf
 import ktx.ashley.get
 import ktx.graphics.use
@@ -29,16 +29,15 @@ class ClickableSystem(
 ) {
     private val circleRegion = assets[TextureAtlasAssets.TowerDefence].findRegion("circle")
 
-
     override fun processEntity(entity: Entity, deltaTime: Float) {
         entity[TransformComponent.mapper]?.let { transform ->
-            entity[AttackTowerComponent.mapper]?.let { tower ->
+            entity[AttackTowerComponent.mapper]?.let { attackTower ->
                 if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
                     val clickPosition = Vector3(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f)
                     camera.unproject(clickPosition)
                     if (transform.bounds.contains(clickPosition.x, clickPosition.y)) {
                         batch.use {
-                            drawTransparentCircle(transform, tower.range)
+                            drawTransparentCircle(transform, attackTower.range)
                         }
                     }
                 }
