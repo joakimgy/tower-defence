@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import ecs.system.*
 import ktx.app.KtxScreen
 
+
 class GameScreen(
     private val game: Game,
     private val batch: Batch,
@@ -17,6 +18,12 @@ class GameScreen(
     private val camera: OrthographicCamera,
     private val engine: PooledEngine
 ) : KtxScreen {
+    private val gameState = GameState(
+        round = 0,
+        enemiesToSpawn = 5,
+        isBuilding = true,
+        blocksRemaining = 5
+    )
 
     override fun show() {
         // start the playback of the background music when the screen is shown
@@ -27,7 +34,7 @@ class GameScreen(
             addSystem(MoveSystem())
             addSystem(RenderSystem(batch, camera))
             addSystem(InputSystem(camera, assets))
-            addSystem(SpawnSystem(assets))
+            addSystem(SpawnSystem(gameState, assets))
             addSystem(ClickableSystem(batch, camera, assets))
             addSystem(AttackSystem(assets))
             addSystem(ProjectileSystem())
