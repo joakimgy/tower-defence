@@ -63,6 +63,7 @@ class AttackSystem(
                                 sprite.setRegion(projectileRegion)
                             }
                         }
+                        return
                     }
                 }
             }

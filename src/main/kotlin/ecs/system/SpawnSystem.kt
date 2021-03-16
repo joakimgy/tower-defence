@@ -18,6 +18,7 @@ import ktx.ashley.get
 import ktx.ashley.with
 import utils.adjacentCoordinates
 import utils.toCoordinate
+import utils.toVector
 
 
 class SpawnSystem(assets: AssetManager) : IntervalSystem(3f) {
@@ -25,10 +26,12 @@ class SpawnSystem(assets: AssetManager) : IntervalSystem(3f) {
     private val tileDirtRegion = assets[TextureAtlasAssets.TowerDefence].findRegion("tileDirt")
     private val playerRegion = assets[TextureAtlasAssets.BlackSmith].findRegion("dude")
     private val destinationRegion = assets[TextureAtlasAssets.TowerDefence].findRegion("star")
+    private val buildingBlockRegion = assets[TextureAtlasAssets.TowerDefence].findRegion("buildingBlock")
 
     override fun addedToEngine(engine: Engine?) {
         super.addedToEngine(engine)
         spawnMap()
+        spawnMaze()
         spawnPlayer()
     }
 
@@ -72,21 +75,6 @@ class SpawnSystem(assets: AssetManager) : IntervalSystem(3f) {
         }
     }
 
-    private fun findEdges(occupiedCoordinates: List<Coordinates>): List<Route> {
-        val allCoordinates = (0 until MAP_SIZE_X).map { x ->
-            (0 until MAP_SIZE_Y).map { y ->
-                Coordinates(x, y)
-            }
-        }.flatten()
-
-        return allCoordinates.filter { !occupiedCoordinates.contains(it) }.map { coordinate ->
-            coordinate.adjacentCoordinates()
-                .filter { adjacent -> !occupiedCoordinates.contains(adjacent) }
-                .filter { adjacent -> !(adjacent.x < 0 || adjacent.y < 0 || adjacent.x >= MAP_SIZE_X || adjacent.y >= MAP_SIZE_Y) }
-                .map { adjacent -> Route(coordinate, adjacent) }
-        }.flatten()
-    }
-
     private fun spawnEnemy() {
         val towers = engine.getEntitiesFor(
             Family.one(BuildingBlockComponent::class.java, AttackTowerComponent::class.java).get()
@@ -118,5 +106,45 @@ class SpawnSystem(assets: AssetManager) : IntervalSystem(3f) {
             }
             with<TransformComponent> { bounds.set(TILE_SIZE, TILE_SIZE, TILE_SIZE, TILE_SIZE) }
         }
+    }
+
+    private fun spawnMaze() {
+        val starterMaze = listOf(
+            Coordinates(0, 1), Coordinates(1, 1), Coordinates(2, 1), Coordinates(3, 1),
+            Coordinates(5, 0), Coordinates(5, 1), Coordinates(5, 2), Coordinates(5, 3),
+            Coordinates(4, 3), Coordinates(3, 3), Coordinates(2, 3), Coordinates(1, 3),
+            Coordinates(1, 4), Coordinates(1, 5), Coordinates(1, 6), Coordinates(1, 7),
+            Coordinates(0, 9), Coordinates(1, 9), Coordinates(2, 9), Coordinates(3, 9),
+            Coordinates(3, 8), Coordinates(3, 7), Coordinates(3, 6), Coordinates(3, 5),
+            Coordinates(5, 4), Coordinates(5, 5), Coordinates(5, 6), Coordinates(5, 7),
+        )
+        starterMaze.map {
+            engine.entity {
+                engine.entity {
+                    with<TransformComponent> { bounds.set(it.toVector().x, it.toVector().y, TILE_SIZE, TILE_SIZE) }
+                    with<ClickableComponent>()
+                    with<RenderComponent> {
+                        sprite.setRegion(buildingBlockRegion)
+                    }
+                    with<BuildingBlockComponent>()
+                }
+            }
+        }
+
+    }
+
+    private fun findEdges(occupiedCoordinates: List<Coordinates>): List<Route> {
+        val allCoordinates = (0 until MAP_SIZE_X).map { x ->
+            (0 until MAP_SIZE_Y).map { y ->
+                Coordinates(x, y)
+            }
+        }.flatten()
+
+        return allCoordinates.filter { !occupiedCoordinates.contains(it) }.map { coordinate ->
+            coordinate.adjacentCoordinates()
+                .filter { adjacent -> !occupiedCoordinates.contains(adjacent) }
+                .filter { adjacent -> !(adjacent.x < 0 || adjacent.y < 0 || adjacent.x >= MAP_SIZE_X || adjacent.y >= MAP_SIZE_Y) }
+                .map { adjacent -> Route(coordinate, adjacent) }
+        }.flatten()
     }
 }

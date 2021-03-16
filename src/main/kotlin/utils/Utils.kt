@@ -13,14 +13,10 @@ fun Coordinates.toVector(): Vector2 {
 
 fun Coordinates.adjacentCoordinates(): List<Coordinates> {
     return listOf(
-        Coordinates(this.x - 1, this.y - 1),
-        Coordinates(this.x, this.y - 1),
-        Coordinates(this.x + 1, this.y - 1),
+        Coordinates(this.x, this.y + 1),
         Coordinates(this.x - 1, this.y),
         Coordinates(this.x + 1, this.y),
-        Coordinates(this.x - 1, this.y + 1),
-        Coordinates(this.x, this.y + 1),
-        Coordinates(this.x + 1, this.y + 1),
+        Coordinates(this.x, this.y - 1),
     )
 }
 
