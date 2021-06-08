@@ -21,8 +21,8 @@ class ProjectileSystem() : IteratingSystem(
         entity[ProjectileComponent.mapper]?.let { projectile ->
             entity[TransformComponent.mapper]?.let { transform ->
                 entity[MoveComponent.mapper]?.let { move ->
-                    val enemyHealthCmp = projectile.enemyEntity[HealthComponent.mapper]
-                    val enemyTransformCmp = projectile.enemyEntity[TransformComponent.mapper]
+                    val enemyHealthCmp = projectile.targetEntity[HealthComponent.mapper]
+                    val enemyTransformCmp = projectile.targetEntity[TransformComponent.mapper]
                     // Check that enemy is still alive
                     if (enemyHealthCmp == null || enemyTransformCmp == null) {
                         engine.removeEntity(entity)

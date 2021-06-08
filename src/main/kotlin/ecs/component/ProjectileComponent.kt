@@ -10,6 +10,6 @@ class ProjectileComponent() : Component {
         val mapper = mapperFor<ProjectileComponent>()
     }
 
-    lateinit var enemyEntity: Entity
+    lateinit var targetEntity: Entity
     var damage: Float = 0.0f
 }

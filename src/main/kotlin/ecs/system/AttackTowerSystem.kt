@@ -49,7 +49,7 @@ class AttackTowerSystem(
                     ) {
                         engine.entity {
                             with<ProjectileComponent> {
-                                this.enemyEntity = enemyEntity
+                                this.targetEntity = enemyEntity
                                 this.damage = tower.damage
                             }
                             with<MoveComponent> {
