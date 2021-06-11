@@ -3,9 +3,9 @@ package ecs.component
 import com.badlogic.ashley.core.Component
 import ktx.ashley.mapperFor
 
-class InteractableComponent : Component {
+class InteractiveComponent : Component {
     companion object {
-        val mapper = mapperFor<InteractableComponent>()
+        val mapper = mapperFor<InteractiveComponent>()
     }
 
     var cursorIsHovering = false

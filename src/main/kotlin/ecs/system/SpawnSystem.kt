@@ -57,7 +57,7 @@ class SpawnSystem(private val gameState: GameState, assets: AssetManager) : Inte
                     with<RenderComponent> {
                         sprite.setRegion(tileDirtRegion)
                     }
-                    with<InteractableComponent>()
+                    with<InteractiveComponent>()
                 }
             }
         }
@@ -75,7 +75,7 @@ class SpawnSystem(private val gameState: GameState, assets: AssetManager) : Inte
             with<HealthComponent>()
             with<TransformComponent> { bounds.set(800f / 2f, 480f / 2f, 24f, 32f) }
             with<MoveComponent>()
-            with<InteractableComponent>()
+            with<InteractiveComponent>()
             with<RenderComponent> {
                 z = 2
                 sprite.setRegion(playerRegion)

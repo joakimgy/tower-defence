@@ -72,37 +72,45 @@ class RenderSystem(
             entity[HealthComponent.mapper]?.let { health ->
                 renderHealthBar(health, transform)
             }
-            // Render building information
-            entity[InteractableComponent.mapper]?.let { interactable ->
-                if (interactable.isClicked) {
-                    val bounds = Rectangle(
-                        Rectangle(
-                            transform.bounds.x - TILE_SIZE * 2,
-                            transform.bounds.y + TILE_SIZE,
-                            TILE_SIZE * 5,
-                            TILE_SIZE * 2
-                        )
-                    )
-                    entity[AttackTowerComponent.mapper]?.let {
-                        renderEntityInfo("Attack tower", bounds)
-                    }
-                    entity[BuildingBlockComponent.mapper]?.let {
-                        renderEntityInfo("Building block", bounds)
-                    }
-                    entity[PlayerComponent.mapper]?.let {
-                        entity[HealthComponent.mapper]?.let {
-                            renderEntityInfo("Player has ${it.health} life points remaining.", bounds)
-                        }
-                    }
-                }
-                if (interactable.cursorIsHovering) {
-                    entity[AttackTowerComponent.mapper]?.let { tower ->
-                        if (!interactable.isClicked) {
-                            drawTransparentCircle(transform, tower.range)
-                        }
+            // Render textures related to interactive components
+            entity[InteractiveComponent.mapper]?.let { interactiveComponent ->
+                renderInteractiveComponent(interactiveComponent, transform, entity)
+            }
+        }
+    }
 
-                    }
+    private fun renderInteractiveComponent(
+        interactiveComponent: InteractiveComponent,
+        transform: TransformComponent,
+        entity: Entity
+    ) {
+        if (interactiveComponent.isClicked) {
+            val bounds = Rectangle(
+                Rectangle(
+                    transform.bounds.x - TILE_SIZE * 2,
+                    transform.bounds.y + TILE_SIZE,
+                    TILE_SIZE * 5,
+                    TILE_SIZE * 2
+                )
+            )
+            entity[AttackTowerComponent.mapper]?.let {
+                renderEntityInfo("Attack tower", bounds)
+            }
+            entity[BuildingBlockComponent.mapper]?.let {
+                renderEntityInfo("Building block", bounds)
+            }
+            entity[PlayerComponent.mapper]?.let {
+                entity[HealthComponent.mapper]?.let {
+                    renderEntityInfo("Player has ${it.health} life points remaining.", bounds)
                 }
+            }
+        }
+        if (interactiveComponent.cursorIsHovering) {
+            entity[AttackTowerComponent.mapper]?.let { tower ->
+                if (!interactiveComponent.isClicked) {
+                    drawTransparentCircle(transform, tower.range)
+                }
+
             }
         }
     }

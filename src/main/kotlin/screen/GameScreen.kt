@@ -39,7 +39,7 @@ class GameScreen(
             addSystem(RenderSystem(batch, font, camera, gameState, assets))
             addSystem(PlayerSystem(camera, assets, gameState))
             addSystem(SpawnSystem(gameState, assets))
-            addSystem(InteractableSystem(batch, camera))
+            addSystem(InteractiveSystem(batch, camera))
             addSystem(AttackTowerSystem(assets))
             addSystem(ProjectileSystem())
             addSystem(EnemySystem())
