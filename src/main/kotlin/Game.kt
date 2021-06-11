@@ -2,6 +2,7 @@ import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
@@ -19,10 +20,14 @@ class Game : KtxGame<KtxScreen>() {
     private val context = Context()
 
     override fun create() {
-        val file = Gdx.files.internal("src/main/kotlin/assets/fonts/Raleway-SemiBold.ttf")
-        val generator = FreeTypeFontGenerator(file)
+        val file = Gdx.files.internal("src/main/kotlin/assets/fonts/Raleway-Regular.ttf")
+        val generator = FreeTypeFontGenerator(file).apply {
+            scaleForPixelHeight(Config.FONT_SIZE)
+        }
         val parameter = FreeTypeFontParameter().apply {
-            size = 30
+            size = Config.FONT_SIZE
+            this.minFilter = Texture.TextureFilter.Nearest;
+            this.magFilter = Texture.TextureFilter.MipMapLinearNearest;
         }
         val bitmapFont = generator.generateFont(parameter)
         generator.dispose()
