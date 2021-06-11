@@ -1,29 +1,35 @@
 package ecs.system
 
 import Config.TILE_SIZE
+import assets.TextureAtlasAssets
+import assets.get
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.SortedIteratingSystem
+import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.BitmapFont
-import ecs.component.HealthComponent
-import ecs.component.RenderComponent
-import ecs.component.TransformComponent
-import ecs.component.buildings.BuildingInfoComponent
+import com.badlogic.gdx.graphics.g2d.GlyphLayout
+import com.badlogic.gdx.math.Rectangle
+import com.badlogic.gdx.utils.Align
+import ecs.component.*
+import ecs.component.buildings.AttackTowerComponent
+import ecs.component.buildings.BuildingBlockComponent
 import ktx.ashley.allOf
 import ktx.ashley.get
 import ktx.graphics.use
 import screen.GameState
-
+import utils.getCenterXY
 
 class RenderSystem(
     private val batch: Batch,
     private val font: BitmapFont,
     private val camera: OrthographicCamera,
-    private val gameState: GameState
+    private val gameState: GameState,
+    private val assets: AssetManager
 ) : SortedIteratingSystem(
     allOf(RenderComponent::class, TransformComponent::class).get(),
     // compareBy is used to render entities by their z-index (=player is drawn in the background; raindrops are drawn in the foreground)
@@ -35,6 +41,7 @@ class RenderSystem(
     private val redHealthBarTexture =
         createTexture(1, 1, Color.RED.apply { a = 0.5f })
     private val infoBoxTexture = createTexture(1, 1, Color.DARK_GRAY.apply { a = 0.5f })
+    private val circleRegion = assets[TextureAtlasAssets.TowerDefence].findRegion("circle")
 
     private val healthBarWidth = TILE_SIZE
     private val healthBarHeight = 4f
@@ -66,25 +73,62 @@ class RenderSystem(
                 renderHealthBar(health, transform)
             }
             // Render building information
-            entity[BuildingInfoComponent.mapper]?.let { info ->
-                renderBuildingInfo(info, transform)
+            entity[InteractableComponent.mapper]?.let { interactable ->
+                if (interactable.isClicked) {
+                    val bounds = Rectangle(
+                        Rectangle(
+                            transform.bounds.x - TILE_SIZE * 2,
+                            transform.bounds.y + TILE_SIZE,
+                            TILE_SIZE * 5,
+                            TILE_SIZE * 2
+                        )
+                    )
+                    entity[AttackTowerComponent.mapper]?.let {
+                        renderEntityInfo("Attack tower", bounds)
+                    }
+                    entity[BuildingBlockComponent.mapper]?.let {
+                        renderEntityInfo("Building block", bounds)
+                    }
+                    entity[PlayerComponent.mapper]?.let {
+                        entity[HealthComponent.mapper]?.let {
+                            renderEntityInfo("Player has ${it.health} life points remaining.", bounds)
+                        }
+                    }
+                }
+                if (interactable.cursorIsHovering) {
+                    entity[AttackTowerComponent.mapper]?.let { tower ->
+                        if (!interactable.isClicked) {
+                            drawTransparentCircle(transform, tower.range)
+                        }
+
+                    }
+                }
             }
         }
     }
 
-    private fun renderBuildingInfo(info: BuildingInfoComponent, transform: TransformComponent) {
+    private fun renderEntityInfo(text: String, bounds: Rectangle) {
         batch.draw(
             infoBoxTexture,
-            transform.bounds.x,
-            transform.bounds.y,
-            transform.bounds.width,
-            transform.bounds.height
+            bounds.x,
+            bounds.y,
+            bounds.width,
+            bounds.height
         )
+        val padding = TILE_SIZE / 4f
+        val text = GlyphLayout(
+            font,
+            text,
+            Color.WHITE,
+            bounds.width - padding * 2,
+            Align.left,
+            true
+        );
         font.draw(
             batch,
-            "${info.upgrades}",
-            transform.bounds.x + TILE_SIZE / 2f,
-            transform.bounds.y + transform.bounds.height - TILE_SIZE / 2f
+            text,
+            bounds.x + padding,
+            bounds.y + bounds.height - padding,
         )
     }
 
@@ -104,6 +148,18 @@ class RenderSystem(
             healthBarWidth * (1 - healthPercentage),
             healthBarHeight
         )
+    }
+
+    private fun drawTransparentCircle(transform: TransformComponent, range: Float) {
+        batch.setColor(0f, 0f, 0f, 0.2f)
+        batch.draw(
+            circleRegion,
+            transform.bounds.getCenterXY().x - range,
+            transform.bounds.getCenterXY().y - range,
+            range * 2f,
+            range * 2f
+        )
+        batch.color = Color.WHITE
     }
 
     private fun renderGameInterface() {

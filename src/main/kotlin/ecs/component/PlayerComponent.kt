@@ -8,5 +8,4 @@ class PlayerComponent : Component {
     companion object {
         val mapper = mapperFor<PlayerComponent>()
     }
-
 }

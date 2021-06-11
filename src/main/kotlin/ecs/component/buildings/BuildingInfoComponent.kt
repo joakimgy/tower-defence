@@ -9,6 +9,5 @@ class BuildingInfoComponent : Component {
         val mapper = mapperFor<BuildingInfoComponent>()
     }
 
-    val upgrades = listOf(Tower.ATTACK_TOWER)
     lateinit var entity: Entity
 }

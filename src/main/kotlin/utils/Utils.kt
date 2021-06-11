@@ -6,7 +6,6 @@ import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 
-
 fun Coordinates.toVector(): Vector2 {
     return Vector2(((x + 1) * TILE_SIZE), (y + 1) * TILE_SIZE)
 }

@@ -23,7 +23,6 @@ import utils.adjacentCoordinates
 import utils.toCoordinate
 import utils.toVector
 
-
 class SpawnSystem(private val gameState: GameState, assets: AssetManager) : IntervalSystem(1f) {
     private val enemyRegion = assets[TextureAtlasAssets.TowerDefence].findRegion("enemy")
     private val tileDirtRegion = assets[TextureAtlasAssets.TowerDefence].findRegion("tileDirt")
@@ -31,13 +30,11 @@ class SpawnSystem(private val gameState: GameState, assets: AssetManager) : Inte
     private val destinationRegion = assets[TextureAtlasAssets.TowerDefence].findRegion("star")
     private val buildingBlockRegion = assets[TextureAtlasAssets.TowerDefence].findRegion("buildingBlock")
 
-
     override fun addedToEngine(engine: Engine?) {
         super.addedToEngine(engine)
         spawnMap()
         spawnPlayer()
     }
-
 
     override fun updateInterval() {
         if (!gameState.isBuilding) {
@@ -60,7 +57,7 @@ class SpawnSystem(private val gameState: GameState, assets: AssetManager) : Inte
                     with<RenderComponent> {
                         sprite.setRegion(tileDirtRegion)
                     }
-                    with<ClickableComponent>()
+                    with<InteractableComponent>()
                 }
             }
         }
@@ -78,13 +75,13 @@ class SpawnSystem(private val gameState: GameState, assets: AssetManager) : Inte
             with<HealthComponent>()
             with<TransformComponent> { bounds.set(800f / 2f, 480f / 2f, 24f, 32f) }
             with<MoveComponent>()
+            with<InteractableComponent>()
             with<RenderComponent> {
                 z = 2
                 sprite.setRegion(playerRegion)
             }
         }
     }
-
 
     private fun spawnEnemy(round: Int) {
         val towers = engine.getEntitiesFor(
@@ -141,7 +138,6 @@ class SpawnSystem(private val gameState: GameState, assets: AssetManager) : Inte
                 }
             }
         }
-
     }
 
     private fun findEdges(occupiedCoordinates: List<Coordinates>): List<Route> {

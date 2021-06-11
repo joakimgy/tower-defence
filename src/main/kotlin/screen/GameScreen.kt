@@ -1,5 +1,6 @@
 package screen
 
+import Config
 import Game
 import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.assets.AssetManager
@@ -35,20 +36,23 @@ class GameScreen(
         // initialize entity engine
         engine.apply {
             addSystem(MoveSystem())
-            addSystem(RenderSystem(batch, font, camera, gameState))
+            addSystem(RenderSystem(batch, font, camera, gameState, assets))
             addSystem(PlayerSystem(camera, assets, gameState))
             addSystem(SpawnSystem(gameState, assets))
-            addSystem(ClickableSystem(batch, camera, assets))
+            addSystem(InteractableSystem(batch, camera))
             addSystem(AttackTowerSystem(assets))
             addSystem(ProjectileSystem())
             addSystem(EnemySystem())
-            addSystem(HealthSystem(onGameOver = {
-                game.removeScreen<GameScreen>()
-                dispose()
-                game.setScreen<GameOverScreen>()
-            }))
+            addSystem(
+                HealthSystem(
+                    onGameOver = {
+                        game.removeScreen<GameScreen>()
+                        dispose()
+                        game.setScreen<GameOverScreen>()
+                    }
+                )
+            )
         }
-
     }
 
     override fun render(delta: Float) {
@@ -71,7 +75,4 @@ class GameScreen(
             }
         }
     }
-
 }
-
-

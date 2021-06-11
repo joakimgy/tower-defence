@@ -11,4 +11,3 @@ class AttackTowerComponent : Component {
     val range = Config.AttackTower.range
     val damage = Config.AttackTower.damage
 }
-

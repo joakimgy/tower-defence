@@ -12,5 +12,4 @@ class EnemyComponent : Component {
     var speed = 50f
 
     var path: MutableList<Coordinates> = mutableListOf()
-
 }

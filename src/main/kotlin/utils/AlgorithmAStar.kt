@@ -96,4 +96,3 @@ abstract class AlgorithmAStar<V : Graph.Vertex, E : Graph.Edge<V>>(
         throw IllegalArgumentException("No Path from Start $begin to Finish $end")
     }
 }
-

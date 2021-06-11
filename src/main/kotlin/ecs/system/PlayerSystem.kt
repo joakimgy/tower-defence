@@ -22,8 +22,8 @@ import ecs.component.TransformComponent
 import ecs.component.buildings.*
 import ktx.ashley.allOf
 import ktx.ashley.get
-import utils.getCenterXY
 import screen.GameState
+import utils.getCenterXY
 
 class PlayerSystem(
     private val camera: OrthographicCamera,
@@ -39,7 +39,6 @@ class PlayerSystem(
 
     override fun processEntity(entity: Entity, deltaTime: Float) {
 
-
         // Should this input logic be somewhere else?
         entity[TransformComponent.mapper]?.let { transform ->
             if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
@@ -51,17 +50,12 @@ class PlayerSystem(
                     gameState
                 )
             }
-            if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-                touchPos.set(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f)
-                camera.unproject(touchPos)
-            }
             if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
                 buildTowerIfPossible(
                     Vector2(transform.bounds.getCenterXY().x, transform.bounds.getCenterXY().y),
                     Tower.BUILDING_BLOCK,
                     gameState
                 )
-
             }
         }
     }

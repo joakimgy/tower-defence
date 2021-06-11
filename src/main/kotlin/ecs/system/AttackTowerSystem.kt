@@ -16,7 +16,6 @@ import ktx.ashley.get
 import ktx.ashley.with
 import utils.getCenterXY
 
-
 class AttackTowerSystem(
     assets: AssetManager
 ) : IntervalIteratingSystem(

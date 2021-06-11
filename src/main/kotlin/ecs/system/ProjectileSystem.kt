@@ -11,11 +11,9 @@ import ktx.ashley.allOf
 import ktx.ashley.get
 import utils.getCenterXY
 
-
 class ProjectileSystem() : IteratingSystem(
     allOf(ProjectileComponent::class, TransformComponent::class, MoveComponent::class).get()
 ) {
-
 
     override fun processEntity(entity: Entity, deltaTime: Float) {
         entity[ProjectileComponent.mapper]?.let { projectile ->

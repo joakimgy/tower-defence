@@ -11,5 +11,4 @@ class HealthComponent : Component {
     companion object {
         val mapper = mapperFor<HealthComponent>()
     }
-
 }

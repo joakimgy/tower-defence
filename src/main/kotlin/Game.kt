@@ -12,11 +12,8 @@ import screen.GameOverScreen
 import screen.GameScreen
 import screen.LoadingScreen
 
-
-
 class Game : KtxGame<KtxScreen>() {
     private val context = Context()
-
 
     override fun create() {
         context.register {
@@ -31,8 +28,6 @@ class Game : KtxGame<KtxScreen>() {
             addScreen(LoadingScreen(this@Game, inject(), inject(), inject(), inject()))
             addScreen(GameScreen(this@Game, inject(), inject(), inject(), inject(), inject()))
             addScreen(GameOverScreen(inject(), inject(), inject(), inject()))
-
-
         }
         setScreen<LoadingScreen>()
         super.create()
@@ -42,5 +37,4 @@ class Game : KtxGame<KtxScreen>() {
         context.dispose()
         super.dispose()
     }
-
 }

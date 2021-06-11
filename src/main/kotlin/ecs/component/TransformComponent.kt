@@ -10,8 +10,4 @@ class TransformComponent() : Component {
     }
 
     val bounds = Rectangle()
-
 }
-
-
-
