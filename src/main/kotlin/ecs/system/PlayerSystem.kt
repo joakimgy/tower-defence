@@ -29,8 +29,7 @@ class PlayerSystem(
     private val camera: OrthographicCamera,
     assets: AssetManager,
     private val gameState: GameState,
-
-    ) : IteratingSystem(
+) : IteratingSystem(
     allOf(PlayerComponent::class, TransformComponent::class, RenderComponent::class).get(),
 ) {
 
