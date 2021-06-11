@@ -1,5 +1,6 @@
 package ecs.system
 
+import Config
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.math.Rectangle
@@ -33,7 +34,7 @@ class ProjectileSystem() : IteratingSystem(
                     move.speed.let {
                         it.x = enemyPos.x - projectilePos.x
                         it.y = enemyPos.y - projectilePos.y
-                        it.setLength(150f)
+                        it.setLength(Config.TILE_SIZE * 5)
                     }
 
                     // Handle hit

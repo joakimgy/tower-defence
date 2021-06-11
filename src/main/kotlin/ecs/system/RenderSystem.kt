@@ -23,6 +23,7 @@ import ktx.ashley.get
 import ktx.graphics.use
 import screen.GameState
 import utils.getCenterXY
+import kotlin.math.max
 
 class RenderSystem(
     private val batch: Batch,
@@ -101,7 +102,10 @@ class RenderSystem(
             }
             entity[PlayerComponent.mapper]?.let {
                 entity[HealthComponent.mapper]?.let {
-                    renderEntityInfo("Player has ${it.health} life points remaining.", bounds)
+                    renderEntityInfo(
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam ante enim, dapibus ut mauris eget, aliquet eleifend neque. Etiam id elit et eros maximus viverra. Aliquam ornare ligula sit amet dolor consectetur maximus.",
+                        bounds
+                    )
                 }
             }
         }
@@ -116,13 +120,6 @@ class RenderSystem(
     }
 
     private fun renderEntityInfo(text: String, bounds: Rectangle) {
-        batch.draw(
-            infoBoxTexture,
-            bounds.x,
-            bounds.y,
-            bounds.width,
-            bounds.height
-        )
         val padding = TILE_SIZE / 4f
         val text = GlyphLayout(
             font,
@@ -131,12 +128,19 @@ class RenderSystem(
             bounds.width - padding * 2,
             Align.left,
             true
-        );
+        )
+        batch.draw(
+            infoBoxTexture,
+            bounds.x,
+            bounds.y,
+            bounds.width,
+            max(text.height, bounds.height) + 2 * padding
+        )
         font.draw(
             batch,
             text,
             bounds.x + padding,
-            bounds.y + bounds.height - padding,
+            bounds.y + max(text.height, bounds.height) + padding,
         )
     }
 

@@ -5,7 +5,6 @@ import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.OrthographicCamera
-import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Vector3
 import ecs.component.InteractiveComponent
 import ecs.component.TransformComponent
@@ -13,7 +12,6 @@ import ktx.ashley.allOf
 import ktx.ashley.get
 
 class InteractiveSystem(
-    private val batch: Batch,
     private val camera: OrthographicCamera,
 ) : IteratingSystem(
     allOf(InteractiveComponent::class).get(),

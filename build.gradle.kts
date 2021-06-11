@@ -24,6 +24,8 @@ dependencies {
     implementation("io.github.libktx:ktx-ashley:1.9.12-b1")
     implementation("io.github.libktx:ktx-assets:1.9.12-b1")
     implementation("com.badlogicgames.ashley:ashley:1.7.3")
+    implementation("com.badlogicgames.gdx:gdx-freetype:1.9.10")
+    implementation("com.badlogicgames.gdx:gdx-freetype-platform:1.9.10:natives-desktop")
 }
 
 tasks.test {

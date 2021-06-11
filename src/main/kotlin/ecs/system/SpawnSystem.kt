@@ -1,6 +1,7 @@
 package ecs.system
 
 import AlgorithmAStarImpl
+import Config
 import Config.MAP_SIZE_X
 import Config.MAP_SIZE_Y
 import Config.TILE_SIZE
@@ -73,7 +74,14 @@ class SpawnSystem(private val gameState: GameState, assets: AssetManager) : Inte
         engine.entity {
             with<PlayerComponent>()
             with<HealthComponent>()
-            with<TransformComponent> { bounds.set(800f / 2f, 480f / 2f, 24f, 32f) }
+            with<TransformComponent> {
+                bounds.set(
+                    Config.Screen.viewportWidth / 2f,
+                    Config.Screen.viewportHeight / 2f,
+                    TILE_SIZE,
+                    TILE_SIZE
+                )
+            }
             with<MoveComponent>()
             with<InteractiveComponent>()
             with<RenderComponent> {
