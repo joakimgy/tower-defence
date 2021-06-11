@@ -8,7 +8,7 @@ class AttackTowerComponent : Component {
         val mapper = mapperFor<AttackTowerComponent>()
     }
 
-    val range = 100f
-    val damage = 20f
+    val range = Config.AttackTower.range
+    val damage = Config.AttackTower.damage
 }
 

@@ -16,7 +16,7 @@ import ecs.component.buildings.BuildingInfoComponent
 import ktx.ashley.allOf
 import ktx.ashley.get
 import ktx.graphics.use
-import utils.GameState
+import screen.GameState
 
 
 class RenderSystem(

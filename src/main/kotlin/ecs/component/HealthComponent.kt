@@ -5,7 +5,7 @@ import ktx.ashley.mapperFor
 
 class HealthComponent : Component {
 
-    var maxHealth = 130f
+    var maxHealth = Config.Player.health
     var health = maxHealth
 
     companion object {

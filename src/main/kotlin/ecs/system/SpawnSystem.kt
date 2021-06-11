@@ -18,7 +18,7 @@ import ecs.component.buildings.BuildingBlockComponent
 import ktx.ashley.entity
 import ktx.ashley.get
 import ktx.ashley.with
-import utils.GameState
+import screen.GameState
 import utils.adjacentCoordinates
 import utils.toCoordinate
 import utils.toVector

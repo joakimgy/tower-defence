@@ -8,8 +8,13 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import ecs.system.*
 import ktx.app.KtxScreen
-import utils.GameState
 
+data class GameState(
+    var round: Int,
+    var enemiesToSpawn: Int,
+    var isBuilding: Boolean,
+    var blocksRemaining: Int,
+)
 
 class GameScreen(
     private val game: Game,
@@ -21,9 +26,9 @@ class GameScreen(
 ) : KtxScreen {
     private val gameState = GameState(
         round = 1,
-        enemiesToSpawn = 5,
+        enemiesToSpawn = Config.enemiesToSpawn,
         isBuilding = true,
-        blocksRemaining = 5
+        blocksRemaining = Config.buildingBlocksPerRound
     )
 
     override fun show() {
@@ -56,13 +61,13 @@ class GameScreen(
         if (gameState.isBuilding) {
             if (gameState.blocksRemaining == 0) {
                 gameState.isBuilding = false
-                gameState.enemiesToSpawn = 5
+                gameState.enemiesToSpawn = Config.enemiesToSpawn
                 gameState.round += 1
             }
         } else {
             if (gameState.enemiesToSpawn == 0) {
                 gameState.isBuilding = true
-                gameState.blocksRemaining = 5
+                gameState.blocksRemaining = Config.buildingBlocksPerRound
             }
         }
     }

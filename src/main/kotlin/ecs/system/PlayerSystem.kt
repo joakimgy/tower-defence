@@ -22,8 +22,8 @@ import ecs.component.TransformComponent
 import ecs.component.buildings.*
 import ktx.ashley.allOf
 import ktx.ashley.get
-import utils.GameState
 import utils.getCenterXY
+import screen.GameState
 
 class PlayerSystem(
     private val camera: OrthographicCamera,
