@@ -1,6 +1,6 @@
 package ecs.system
 
-import TILE_SIZE
+import Config.TILE_SIZE
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.Gdx

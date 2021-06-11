@@ -1,6 +1,6 @@
 package ecs.system
 
-import TILE_SIZE
+import Config.TILE_SIZE
 import assets.TextureAtlasAssets
 import assets.get
 import com.badlogic.ashley.core.Entity

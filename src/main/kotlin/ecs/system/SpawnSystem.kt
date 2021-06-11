@@ -1,11 +1,11 @@
 package ecs.system
 
 import AlgorithmAStarImpl
+import Config.MAP_SIZE_X
+import Config.MAP_SIZE_Y
+import Config.TILE_SIZE
 import Coordinates
-import MAP_SIZE_X
-import MAP_SIZE_Y
 import Route
-import TILE_SIZE
 import assets.TextureAtlasAssets
 import assets.get
 import com.badlogic.ashley.core.Engine

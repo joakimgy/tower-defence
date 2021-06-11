@@ -1,7 +1,7 @@
 package utils
 
+import Config.TILE_SIZE
 import Coordinates
-import TILE_SIZE
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3

@@ -1,8 +1,8 @@
 package ecs.system
 
-import MAP_SIZE_X
-import MAP_SIZE_Y
-import TILE_SIZE
+import Config.MAP_SIZE_X
+import Config.MAP_SIZE_Y
+import Config.TILE_SIZE
 import assets.TextureAtlasAssets
 import assets.get
 import com.badlogic.ashley.core.Entity
